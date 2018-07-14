@@ -1,4 +1,5 @@
-import axios from 'axios';
+import axios, {AxiosAdapter} from 'axios';
+import {cacheAdapterEnhancer, throttleAdapterEnhancer} from 'axios-extensions';
 import debugFactory from 'debug';
 import {apiURL} from '../constants/ott';
 import {PlatformFlagLabel, Query, Response} from './ott.typings';
@@ -7,7 +8,8 @@ const debug = debugFactory('viuer:api:ott');
 
 const ott = axios.create({
   baseURL: apiURL,
-  headers: {'Accept-Encoding': 'gzip, deflate, br'}
+  headers: {'Accept-Encoding': 'gzip, deflate, br'},
+  adapter: throttleAdapterEnhancer(cacheAdapterEnhancer(axios.defaults.adapter as AxiosAdapter))
 });
 
 /**
