@@ -6,12 +6,15 @@ interface Subtitle {
   languageId: string;
 }
 
-export interface Episode {
+interface BasicEpisode {
   productId: string;
   number: number;
   title: string;
   description: string;
   coverImageURL: string;
+}
+
+export interface Episode extends BasicEpisode {
   urls: Response['data']['stream']['url'];
   subtitles: Subtitle[];
 }
@@ -21,4 +24,5 @@ export interface Series {
   description: string;
   coverImageURL: string;
   total: number;
+  episodes: BasicEpisode[];
 }

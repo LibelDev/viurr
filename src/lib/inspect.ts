@@ -15,7 +15,16 @@ export const series = async (productId: string): Promise<Series> => {
     title: name,
     description: description,
     coverImageURL: cover_image_url,
-    total: parseInt(product_total)
+    total: parseInt(product_total),
+    episodes: product.map((product) => {
+      return {
+        productId: product.product_id,
+        number: parseInt(product.number),
+        title: product.synopsis,
+        description: product.description,
+        coverImageURL: product.cover_image_url
+      }
+    })
   };
 };
 
