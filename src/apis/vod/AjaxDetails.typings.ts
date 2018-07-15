@@ -1,8 +1,9 @@
+import {PlatformFlagLabel} from '../ott';
 import * as OTT from '../ott.typings';
 
 export interface Query extends OTT.Query {
   r?: string;
-  platform_flag_label?: OTT.PlatformFlagLabel;
+  platform_flag_label?: PlatformFlagLabel;
   area_id?: string | number;
   product_id: string | number;
   ut?: string | number;

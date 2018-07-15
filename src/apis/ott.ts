@@ -2,9 +2,14 @@ import axios, {AxiosAdapter} from 'axios';
 import {cacheAdapterEnhancer, throttleAdapterEnhancer} from 'axios-extensions';
 import debugFactory from 'debug';
 import {apiURL} from '../constants/ott';
-import {PlatformFlagLabel, Query, Response} from './ott.typings';
+import {Query, Response} from './ott.typings';
 
 const debug = debugFactory('viuer:api:ott');
+
+export enum PlatformFlagLabel {
+  Web = 'web',
+  Phone = 'phone'
+}
 
 const ott = axios.create({
   baseURL: apiURL,

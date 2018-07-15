@@ -1,11 +1,4 @@
-export enum PlatformFlagLabel {
-  Web = 'web',
-  Phone = 'phone'
-}
-
-export interface Query {
-  
-}
+export type Query = any;
 
 export interface Response {
   data: any;
