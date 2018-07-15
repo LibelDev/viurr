@@ -2,9 +2,10 @@
   "name": "viuer",
   "version": "1.0.0",
   "description": "Download programmes from Viu",
-  "main": "dist/index.js",
+  "main": "./dist/index.js",
   "author": "kitce",
   "license": "MIT",
+  "bin": "./dist/cli/cli.js",
   "scripts": {
     "build": "tsc"
   },
