@@ -9,7 +9,13 @@ export interface Options extends CommandArguments {
 
 export const command = 'subtitle <productId> <filePathTemplate>';
 
-export const describe = 'Download subtitle of an episode';
+export const describe = 'Download subtitle(s) of an episode';
+
+const description = [
+  'Subtitle language',
+  '[1 : Chinese (Traditional)]',
+  ''
+];
 
 export const builder = (yargs: yargs.Argv) => (
   yargs
@@ -19,7 +25,7 @@ export const builder = (yargs: yargs.Argv) => (
       choices: ['1'], // TODO: find more available choices
       default: ['1'],
       coerce: value => chain(value).compact().uniq().value(),
-      description: 'Subtitle language (omit this option to download all available subtitles)'
+      description: description.join('\n')
     })
 );
 
