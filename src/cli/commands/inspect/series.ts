@@ -13,4 +13,4 @@ export const handler = async (argv: Options) => {
   const series = await inspect.series(productId);
   const output = json ? JSON.stringify(series, null, 2) : prettyjson.render(series);
   console.info(output);
-}
+};

@@ -28,7 +28,10 @@ export const video = async (productId: string, filePathTemplate: string, quality
   const episode = await inspect.episode(productId);
   const qualityKey = Quality[quality];
   const url = episode.urls[qualityKey];
-  if (!url) throw new Error(`Quality "${quality}" is not available in EP.${episode.number} "${episode.title}" (${series.title})`);
+  if (!url) {
+    /* tslint:disable-next-line:max-line-length */
+    throw new Error(`Quality "${quality}" is not available in EP.${episode.number} "${episode.title}" (${series.title})`);
+  }
   debug('playlist url :', url);
   const basicTemplateValues = getBasicFilePathTemplateValues(series, episode);
   const templateValues = {
@@ -54,14 +57,15 @@ export const video = async (productId: string, filePathTemplate: string, quality
 //  * @param {QualityChoice[]} qualities
 //  * @returns {Promise<string[]>}
 //  */
-// export const videos = async (productId: string, filePathTemplate: string, qualities: QualityChoice[]): Promise<string[]> => {
-//   const filePaths = [];
-//   for (const quality of qualities) {
-//     const filePath = await video(productId, filePathTemplate, quality);
-//     filePaths.push(filePath);
-//   }
-//   return filePaths;
-// };
+/* tslint:disable-next-line:max-line-length */
+export const videos = async (productId: string, filePathTemplate: string, qualities: QualityChoice[]): Promise<string[]> => {
+  const filePaths = [];
+  for (const quality of qualities) {
+    const filePath = await video(productId, filePathTemplate, quality);
+    filePaths.push(filePath);
+  }
+  return filePaths;
+};
 
 /**
  * Download the cover image
@@ -107,7 +111,10 @@ export const subtitle = async (productId: string, filePathTemplate: string, lang
   const episode = await inspect.episode(productId);
   const {subtitles} = episode;
   const subtitle = subtitles.find(subtitle => subtitle.languageId === languageId);
-  if (!subtitle) throw new Error(`Language ID "${languageId}" is not available in EP.${episode.number} "${episode.title}" (${series.title})`);
+  if (!subtitle) {
+    /* tslint:disable-next-line:max-line-length */
+    throw new Error(`Language ID "${languageId}" is not available in EP.${episode.number} "${episode.title}" (${series.title})`);
+  }
   debug('subtitle url :', subtitle.url);
   const {data} = await axios.get(subtitle.url);
   const basicTemplateValues = getBasicFilePathTemplateValues(series, episode);
