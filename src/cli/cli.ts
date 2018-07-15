@@ -9,8 +9,7 @@ const debug = debugFactory('viuer:cli');
 yargs
   .command(download as yargs.CommandModule)
   .command(inspect as yargs.CommandModule)
-  .demandCommand(1, 'Please specify the command')
-  .showHelpOnFail(true, 'Specify --help for available options')
+  .demandCommand(1, 'Specify --help to see available commands')
   .fail((message, err) => {
     if (message) {
       console.error(message);

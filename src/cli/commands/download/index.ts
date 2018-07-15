@@ -10,5 +10,5 @@ export const builder = (yargs: yargs.Argv) => (
   yargs
     .command(episode as yargs.CommandModule)
     .command(series as yargs.CommandModule)
-    .demandCommand(1, 'Please specify what to download, episode or series?')
+    .demandCommand(1, 'Specify --help to see available commands')
 );

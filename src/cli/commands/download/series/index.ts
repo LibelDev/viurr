@@ -14,4 +14,5 @@ export const builder = (yargs: yargs.Argv) => (
     .command(description)
     .command(subtitle)
     .command(video)
+    .demandCommand(1, 'Specify --help to see available commands')
 );

@@ -10,5 +10,5 @@ export const builder = (yargs: yargs.Argv) => (
   yargs
     .command(episode)
     .command(series)
-    .demandCommand(1, 'Please specify what to inspect, episode or series?')
+    .demandCommand(1, 'Specify --help to see available commands')
 );
