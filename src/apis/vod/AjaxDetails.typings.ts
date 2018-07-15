@@ -13,11 +13,11 @@ export interface Response extends OTT.Response {
 }
 
 interface Data {
-  current_product: CurrentProduct;
-  series: Series;
+  current_product?: CurrentProduct;
+  series?: Series;
   series_prediction_actor?: any;
-  series_prediction_category: SeriesPredictionCategory[];
-  series_prediction: SeriesPredictionCategory[];
+  series_prediction_category?: SeriesPredictionCategory[];
+  series_prediction?: SeriesPredictionCategory[];
   movie_prediction_actor?: any;
   movie_prediction_category?: any;
   movie_prediction?: any;
@@ -106,7 +106,7 @@ interface CurrentProduct {
   ccs_product_id: string;
   allow_download: string;
   share_url: string;
-  subtitle: Subtitle[];
+  subtitle: (Subtitle | undefined)[];
   focus?: any;
   ad: Ad[];
   is_movie: number;
