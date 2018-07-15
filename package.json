@@ -2,7 +2,7 @@
   "name": "viuer",
   "version": "1.0.0",
   "description": "Download programmes from Viu",
-  "main": "index.js",
+  "main": "dist/index.js",
   "author": "kitce",
   "license": "MIT",
   "scripts": {
