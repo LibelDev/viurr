@@ -1,7 +1,10 @@
 #!/usr/bin/env node
+import Debugger from 'debug';
 import yargs from 'yargs';
 import * as download from './commands/download';
 import * as inspect from './commands/inspect';
+
+const debug = Debugger('viuer:cli');
 
 yargs
   .command(download as yargs.CommandModule)
@@ -12,8 +15,9 @@ yargs
     if (message) {
       console.error(message);
     }
-    if (err) {
-      console.error(err);
+    if (err && err.message) {
+      debug(err);
+      console.error(err.message);
     }
     process.exit(1);
   })
