@@ -1,10 +1,10 @@
 #!/usr/bin/env node
-import Debugger from 'debug';
+import debugFactory from 'debug';
 import yargs from 'yargs';
 import * as download from './commands/download';
 import * as inspect from './commands/inspect';
 
-const debug = Debugger('viuer:cli');
+const debug = debugFactory('viuer:cli');
 
 yargs
   .command(download as yargs.CommandModule)

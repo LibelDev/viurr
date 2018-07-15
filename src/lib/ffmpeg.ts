@@ -1,10 +1,10 @@
-import Debugger from 'debug';
+import debugFactory from 'debug';
 import ffmpeg from 'fluent-ffmpeg';
 import fs from 'fs';
 import util from 'util';
 import exists from './exists';
 
-const debug = Debugger('viuer:lib:ffmpeg');
+const debug = debugFactory('viuer:lib:ffmpeg');
 
 const access = util.promisify(fs.access);
 

@@ -1,10 +1,10 @@
-import Debugger from 'debug';
+import debugFactory from 'debug';
 import compact from 'lodash/compact';
 import {getDistributeWeb} from '../apis/video';
 import getVodAjaxDetail from '../apis/vod/AjaxDetail';
 import {Episode, Series} from './inspect.typings';
 
-const debug = Debugger('viuer:lib:inspect');
+const debug = debugFactory('viuer:lib:inspect');
 
 /**
  * Inspect the details of a series

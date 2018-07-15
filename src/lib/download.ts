@@ -1,5 +1,5 @@
 import axios from 'axios';
-import Debugger from 'debug';
+import debugFactory from 'debug';
 import fs from 'fs';
 import mime from 'mime';
 import mkdirp from 'mkdirp-promise';
@@ -11,7 +11,7 @@ import {encode} from './ffmpeg';
 import * as inspect from './inspect';
 import {Episode, Series} from './inspect.typings';
 
-const debug = Debugger('viuer:lib:download');
+const debug = debugFactory('viuer:lib:download');
 
 const writeFile = util.promisify(fs.writeFile);
 
