@@ -21,7 +21,7 @@ const writeFile = util.promisify(fs.writeFile);
  * @param {string} productId
  * @param {string} filePathTemplate
  * @param {QualityChoice} quality
- * @returns {Promise<string>}
+ * @returns {Promise<string>} The output file path
  */
 export const video = async (productId: string, filePathTemplate: string, quality: QualityChoice): Promise<string> => {
   const series = await inspect.series(productId);
@@ -55,24 +55,24 @@ export const video = async (productId: string, filePathTemplate: string, quality
 //  * @param {string} productId
 //  * @param {string} filePathTemplate
 //  * @param {QualityChoice[]} qualities
-//  * @returns {Promise<string[]>}
+//  * @returns {Promise<string[]>} The output file paths
 //  */
 /* tslint:disable-next-line:max-line-length */
-export const videos = async (productId: string, filePathTemplate: string, qualities: QualityChoice[]): Promise<string[]> => {
-  const filePaths = [];
-  for (const quality of qualities) {
-    const filePath = await video(productId, filePathTemplate, quality);
-    filePaths.push(filePath);
-  }
-  return filePaths;
-};
+// export const videos = async (productId: string, filePathTemplate: string, qualities: QualityChoice[]): Promise<string[]> => {
+//   const filePaths = [];
+//   for (const quality of qualities) {
+//     const filePath = await video(productId, filePathTemplate, quality);
+//     filePaths.push(filePath);
+//   }
+//   return filePaths;
+// };
 
 /**
  * Download the cover image
  *
  * @param {string} productId
  * @param {string} filePathTemplate
- * @returns {Promise<string>}
+ * @returns {Promise<string>} The output file path
  */
 export const cover = async (productId: string, filePathTemplate: string): Promise<string> => {
   const series = await inspect.series(productId);
@@ -104,7 +104,7 @@ export const cover = async (productId: string, filePathTemplate: string): Promis
  * @param {string} productId
  * @param {string} filePathTemplate
  * @param {string} languageId
- * @returns {Promise<string>}
+ * @returns {Promise<string>} The output file path
  */
 export const subtitle = async (productId: string, filePathTemplate: string, languageId: string): Promise<string> => {
   const series = await inspect.series(productId);
@@ -138,7 +138,7 @@ export const subtitle = async (productId: string, filePathTemplate: string, lang
 //  *
 //  * @param {string} productId
 //  * @param {string} filePathTemplate
-//  * @returns {Promise<string[]>}
+//  * @returns {Promise<string[]>} The output file paths
 //  */
 // export const subtitles = async (productId: string, filePathTemplate: string): Promise<string[]> => {
 //   const episode = await inspect.episode(productId);
@@ -156,7 +156,7 @@ export const subtitle = async (productId: string, filePathTemplate: string, lang
  *
  * @param {string} productId
  * @param {string} filePathTemplate
- * @returns {Promise<string>}
+ * @returns {Promise<string>} The output file path
  */
 export const description = async (productId: string, filePathTemplate: string): Promise<string> => {
   const series = await inspect.series(productId);
