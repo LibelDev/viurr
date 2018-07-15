@@ -1,6 +1,10 @@
+import Debugger from 'debug';
+import compact from 'lodash/compact';
 import {getDistributeWeb} from '../apis/video';
 import getVodAjaxDetail from '../apis/vod/AjaxDetail';
 import {Episode, Series} from './inspect.typings';
+
+const debug = Debugger('viuer:lib:inspect');
 
 /**
  * Inspect the details of a series
@@ -10,7 +14,9 @@ import {Episode, Series} from './inspect.typings';
  */
 export const series = async (productId: string): Promise<Series> => {
   const vodAjaxDetailResponse = await getVodAjaxDetail({product_id: productId});
-  const {name, description, cover_image_url, product_total, product} = vodAjaxDetailResponse.data.series;
+  const {series} = vodAjaxDetailResponse.data;
+  if (!series) throw new Error(`Product of "${productId}" not found`);
+  const {name, description, cover_image_url, product_total, product} = series;
   return {
     title: name,
     description: description,
@@ -36,9 +42,12 @@ export const series = async (productId: string): Promise<Series> => {
  */
 export const episode = async (productId: string): Promise<Episode> => {
   const vodAjaxDetailResponse = await getVodAjaxDetail({product_id: productId});
-  const {ccs_product_id, number, synopsis, description, subtitle, cover_image_url} = vodAjaxDetailResponse.data.current_product;
+  const {current_product} = vodAjaxDetailResponse.data;
+  if (!current_product) throw new Error(`Product of "${productId}" not found`);
+  const {ccs_product_id, number, synopsis, description, subtitle, cover_image_url} = current_product;
   const distributeWebResponse = await getDistributeWeb({ccs_product_id});
   const {url} = distributeWebResponse.data.stream;
+  const subtitles = compact(subtitle);
   return {
     productId,
     number: parseInt(number),
@@ -46,7 +55,7 @@ export const episode = async (productId: string): Promise<Episode> => {
     description: description,
     coverImageURL: cover_image_url,
     urls: url,
-    subtitles: subtitle.map((subtitle) => {
+    subtitles: subtitles.map((subtitle) => {
       return {
         name: subtitle.name,
         url: subtitle.url,
