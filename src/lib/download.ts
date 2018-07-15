@@ -28,7 +28,7 @@ export const video = async (productId: string, filePathTemplate: string, quality
   const episode = await inspect.episode(productId);
   const qualityKey = Quality[quality];
   const url = episode.urls[qualityKey];
-  if (!url) throw new Error(`Quality "${quality}" is not available in ep.${episode.number} "${episode.title}" (${series.title})`);
+  if (!url) throw new Error(`Quality "${quality}" is not available in EP.${episode.number} "${episode.title}" (${series.title})`);
   debug('playlist url :', url);
   const basicTemplateValues = getBasicFilePathTemplateValues(series, episode);
   const templateValues = {
@@ -45,22 +45,23 @@ export const video = async (productId: string, filePathTemplate: string, quality
   return _filePath;
 };
 
-/**
- * Download the videos in specific qualities
- *
- * @param {string} productId
- * @param {string} filePathTemplate
- * @param {QualityChoice[]} qualities
- * @returns {Promise<string[]>}
- */
-export const videos = async (productId: string, filePathTemplate: string, qualities: QualityChoice[]): Promise<string[]> => {
-  const filePaths = [];
-  for (const quality of qualities) {
-    const filePath = await video(productId, filePathTemplate, quality);
-    filePaths.push(filePath);
-  }
-  return filePaths;
-};
+// /**
+//  * Download the videos in specific qualities
+//  * (wrapper of `video()` for multiple qualities)
+//  *
+//  * @param {string} productId
+//  * @param {string} filePathTemplate
+//  * @param {QualityChoice[]} qualities
+//  * @returns {Promise<string[]>}
+//  */
+// export const videos = async (productId: string, filePathTemplate: string, qualities: QualityChoice[]): Promise<string[]> => {
+//   const filePaths = [];
+//   for (const quality of qualities) {
+//     const filePath = await video(productId, filePathTemplate, quality);
+//     filePaths.push(filePath);
+//   }
+//   return filePaths;
+// };
 
 /**
  * Download the cover image
@@ -89,7 +90,7 @@ export const cover = async (productId: string, filePathTemplate: string): Promis
   debug('cover image directory :', directory);
   await mkdirp(directory);
   const buffer = Buffer.from(data, 'binary');
-  await writeFile(_filePath, buffer);
+  await writeFile(_filePath, buffer, {flag: 'wx'});
   return _filePath;
 };
 
@@ -99,16 +100,14 @@ export const cover = async (productId: string, filePathTemplate: string): Promis
  * @param {string} productId
  * @param {string} filePathTemplate
  * @param {string} languageId
- * @returns {Promise<string | undefined>}
+ * @returns {Promise<string>}
  */
 export const subtitle = async (productId: string, filePathTemplate: string, languageId: string): Promise<string> => {
   const series = await inspect.series(productId);
   const episode = await inspect.episode(productId);
   const {subtitles} = episode;
-  const subtitle = subtitles
-    // .filter(subtitle => !!subtitle)
-    .find(subtitle => !!subtitle && subtitle.languageId === languageId);
-  if (!subtitle) throw new Error(`Language ID "${languageId}" is not available in ep.${episode.number} "${episode.title}" (${series.title})`);
+  const subtitle = subtitles.find(subtitle => subtitle.languageId === languageId);
+  if (!subtitle) throw new Error(`Language ID "${languageId}" is not available in EP.${episode.number} "${episode.title}" (${series.title})`);
   debug('subtitle url :', subtitle.url);
   const {data} = await axios.get(subtitle.url);
   const basicTemplateValues = getBasicFilePathTemplateValues(series, episode);
@@ -122,26 +121,28 @@ export const subtitle = async (productId: string, filePathTemplate: string, lang
   const directory = path.dirname(_filePath);
   debug('subtitle directory :', directory);
   await mkdirp(directory);
-  await writeFile(_filePath, data);
+  await writeFile(_filePath, data, {flag: 'wx'});
   return _filePath;
 };
 
-/**
- * Download the subtitles in specific languages
- *
- * @param {string} productId
- * @param {string} filePathTemplate
- * @param {string[]} languageIds
- * @returns {Promise<string[]>}
- */
-export const subtitles = async (productId: string, filePathTemplate: string, languageIds: string[]): Promise<string[]> => {
-  const filePaths = [];
-  for (const languageId of languageIds) {
-    const filePath = await subtitle(productId, filePathTemplate, languageId);
-    filePaths.push(filePath);
-  }
-  return filePaths;
-};
+// /**
+//  * Download the subtitles in specific languages
+//  * (wrapper of `subtitle()` for all available languages)
+//  *
+//  * @param {string} productId
+//  * @param {string} filePathTemplate
+//  * @returns {Promise<string[]>}
+//  */
+// export const subtitles = async (productId: string, filePathTemplate: string): Promise<string[]> => {
+//   const episode = await inspect.episode(productId);
+//   const {subtitles} = episode;
+//   const filePaths = [];
+//   for (const {languageId} of subtitles) {
+//     const filePath = await subtitle(productId, filePathTemplate, languageId);
+//     filePaths.push(filePath);
+//   }
+//   return filePaths;
+// };
 
 /**
  * Save the description as plain text file
@@ -160,7 +161,7 @@ export const description = async (productId: string, filePathTemplate: string): 
   const directory = path.dirname(_filePath);
   debug('description directory :', directory);
   await mkdirp(directory);
-  await writeFile(_filePath, episode.description);
+  await writeFile(_filePath, episode.description, {flag: 'wx'});
   return _filePath;
 };
 
