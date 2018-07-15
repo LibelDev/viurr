@@ -1,0 +1,18 @@
+import yargs from 'yargs';
+import * as cover from './cover';
+import * as description from './description';
+import * as subtitle from './subtitle';
+import * as video from './video';
+
+export const command = 'episode';
+
+export const describe = 'Download files of an episode';
+
+export const builder = (yargs: yargs.Argv) => (
+  yargs
+    .command(cover)
+    .command(description)
+    .command(subtitle)
+    .command(video)
+    .demandCommand(1, 'Please specify what to download, cover, description, subtitle or video?')
+);
