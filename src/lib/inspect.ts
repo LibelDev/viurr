@@ -15,7 +15,7 @@ const debug = Debugger('viuer:lib:inspect');
 export const series = async (productId: string): Promise<Series> => {
   const vodAjaxDetailResponse = await getVodAjaxDetail({product_id: productId});
   const {series} = vodAjaxDetailResponse.data;
-  if (!series) throw new Error(`Product of "${productId}" not found`);
+  if (!series) throw new Error(`Product "${productId}" not found`);
   const {name, description, cover_image_url, product_total, product} = series;
   return {
     title: name,
@@ -43,7 +43,7 @@ export const series = async (productId: string): Promise<Series> => {
 export const episode = async (productId: string): Promise<Episode> => {
   const vodAjaxDetailResponse = await getVodAjaxDetail({product_id: productId});
   const {current_product} = vodAjaxDetailResponse.data;
-  if (!current_product) throw new Error(`Product of "${productId}" not found`);
+  if (!current_product) throw new Error(`Product "${productId}" not found`);
   const {ccs_product_id, number, synopsis, description, subtitle, cover_image_url} = current_product;
   const distributeWebResponse = await getDistributeWeb({ccs_product_id});
   const {url} = distributeWebResponse.data.stream;
