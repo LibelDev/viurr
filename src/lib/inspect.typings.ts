@@ -16,7 +16,7 @@ interface BasicEpisode {
 
 export interface Episode extends BasicEpisode {
   urls: Response['data']['stream']['url'];
-  subtitles: Subtitle[];
+  subtitles: (Subtitle | undefined)[];
 }
 
 export interface Series {

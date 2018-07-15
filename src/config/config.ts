@@ -1,6 +1,8 @@
 export enum Quality {
-  FullHD = 's1080p',
-  HD = 's720p',
-  Good = 's480p',
-  Low = 's240p'
+  '1080p' = 's1080p',
+  '720p' = 's720p',
+  '480p' = 's480p',
+  '240p' = 's240p'
 }
+
+export type QualityChoice = keyof typeof Quality;

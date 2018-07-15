@@ -6,7 +6,7 @@ import mkdirp from 'mkdirp-promise';
 import mustache from 'mustache';
 import path from 'path';
 import util from 'util';
-import {Quality} from '../config/config';
+import {Quality, QualityChoice} from '../config/config';
 import {encode} from './ffmpeg';
 import * as inspect from './inspect';
 import {Episode, Series} from './inspect.typings';
@@ -16,22 +16,26 @@ const debug = Debugger('viuer:lib:download');
 const writeFile = util.promisify(fs.writeFile);
 
 /**
- * Download and encode the video
+ * Download the video in specific quality
  *
  * @param {string} productId
  * @param {string} filePathTemplate
- * @param {Quality} quality
+ * @param {QualityChoice} quality
  * @returns {Promise<string>}
  */
-export const video = async (productId: string, filePathTemplate: string, quality: keyof typeof Quality): Promise<string> => {
+export const video = async (productId: string, filePathTemplate: string, quality: QualityChoice): Promise<string> => {
   const series = await inspect.series(productId);
   const episode = await inspect.episode(productId);
-  const _quality = Quality[quality];
-  const url = episode.urls[_quality];
+  const qualityKey = Quality[quality];
+  const url = episode.urls[qualityKey];
   if (!url) throw new Error(`Quality "${quality}" is not available in ep.${episode.number} "${episode.title}" (${series.title})`);
   debug('playlist url :', url);
   const basicTemplateValues = getBasicFilePathTemplateValues(series, episode);
-  const filePath = mustache.render(filePathTemplate, basicTemplateValues);
+  const templateValues = {
+    ...basicTemplateValues,
+    QUALITY: quality
+  };
+  const filePath = mustache.render(filePathTemplate, templateValues);
   const _filePath = path.resolve(filePath);
   debug('video file :', _filePath);
   const directory = path.dirname(_filePath);
@@ -39,6 +43,23 @@ export const video = async (productId: string, filePathTemplate: string, quality
   await mkdirp(directory);
   await encode(url, _filePath);
   return _filePath;
+};
+
+/**
+ * Download the videos in specific qualities
+ *
+ * @param {string} productId
+ * @param {string} filePathTemplate
+ * @param {QualityChoice[]} qualities
+ * @returns {Promise<string[]>}
+ */
+export const videos = async (productId: string, filePathTemplate: string, qualities: QualityChoice[]): Promise<string[]> => {
+  const filePaths = [];
+  for (const quality of qualities) {
+    const filePath = await video(productId, filePathTemplate, quality);
+    filePaths.push(filePath);
+  }
+  return filePaths;
 };
 
 /**
@@ -80,11 +101,13 @@ export const cover = async (productId: string, filePathTemplate: string): Promis
  * @param {string} languageId
  * @returns {Promise<string | undefined>}
  */
-export const subtitle = async (productId: string, filePathTemplate: string, languageId: string): Promise<string | undefined> => {
+export const subtitle = async (productId: string, filePathTemplate: string, languageId: string): Promise<string> => {
   const series = await inspect.series(productId);
   const episode = await inspect.episode(productId);
   const {subtitles} = episode;
-  const subtitle = subtitles.find(subtitle => subtitle.languageId === languageId);
+  const subtitle = subtitles
+    // .filter(subtitle => !!subtitle)
+    .find(subtitle => !!subtitle && subtitle.languageId === languageId);
   if (!subtitle) throw new Error(`Language ID "${languageId}" is not available in ep.${episode.number} "${episode.title}" (${series.title})`);
   debug('subtitle url :', subtitle.url);
   const {data} = await axios.get(subtitle.url);
@@ -104,18 +127,18 @@ export const subtitle = async (productId: string, filePathTemplate: string, lang
 };
 
 /**
- * Download all of the available subtitles
+ * Download the subtitles in specific languages
  *
  * @param {string} productId
  * @param {string} filePathTemplate
+ * @param {string[]} languageIds
  * @returns {Promise<string[]>}
  */
-export const subtitles = async (productId: string, filePathTemplate: string): Promise<string[]> => {
-  const {subtitles} = await inspect.episode(productId);
+export const subtitles = async (productId: string, filePathTemplate: string, languageIds: string[]): Promise<string[]> => {
   const filePaths = [];
-  for (const {languageId} of subtitles) {
+  for (const languageId of languageIds) {
     const filePath = await subtitle(productId, filePathTemplate, languageId);
-    if (filePath) filePaths.push(filePath);
+    filePaths.push(filePath);
   }
   return filePaths;
 };
@@ -150,6 +173,7 @@ export const description = async (productId: string, filePathTemplate: string): 
  */
 function getBasicFilePathTemplateValues (series: Series, episode: Episode) {
   return {
+    PRODUCT_ID: episode.productId,
     SERIES_TITLE: series.title,
     EPISODE_TITLE: episode.title,
     EPISODE_NUMBER: episode.number
