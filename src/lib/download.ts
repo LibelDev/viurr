@@ -141,6 +141,13 @@ export const description = async (productId: string, filePathTemplate: string): 
   return _filePath;
 };
 
+/**
+ * Get the basic supported file path template values
+ *
+ * @param {Series} series
+ * @param {Episode} episode
+ * @returns Template values
+ */
 function getBasicFilePathTemplateValues (series: Series, episode: Episode) {
   return {
     SERIES_TITLE: series.title,
