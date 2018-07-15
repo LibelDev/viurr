@@ -6,3 +6,9 @@ export enum Quality {
 }
 
 export type QualityChoice = keyof typeof Quality;
+
+export enum Language {
+  'TC' = '1'
+}
+
+export type LanguageChoice = keyof typeof Language;
