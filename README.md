@@ -158,12 +158,12 @@ Install as local module
 
 ```bash
 # npm
-$ npm install viurr --save
+npm install viurr --save
 ```
 
 ```bash
 # Yarn
-$ yarn add viurr
+yarn add viurr
 ```
 
 #### Types
@@ -243,6 +243,13 @@ Download the subtitle in specific language
 Download the video in specific quality
 
 `download.video(productId: string, filePathTemplate: string, quality: QualityChoice): Promise<string>`
+
+## Contribute
+
+```bash
+yarn install
+yarn build
+```
 
 ## Test
 
