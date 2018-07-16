@@ -9,9 +9,10 @@
   "scripts": {
     "build": "tsc",
     "lint": "tslint --project tsconfig.json --config tslint.json",
+    "pkg": "pkg --targets node8-linux,node8-macos,node8-win . --out-path builds",
     "prepublishOnly": "yarn build"
   },
-  "files" :[
+  "files": [
     "dist/"
   ],
   "dependencies": {
@@ -36,6 +37,7 @@
     "@types/prettyjson": "^0.0.28",
     "@types/yargs": "^11.1.0",
     "debug": "^3.1.0",
+    "pkg": "^4.3.3",
     "tslint": "^5.10.0",
     "tslint-eslint-rules": "^5.3.1",
     "typescript": "^2.9.2"
