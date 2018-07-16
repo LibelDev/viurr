@@ -8,7 +8,8 @@
   "bin": "./dist/cli/cli.js",
   "scripts": {
     "build": "tsc",
-    "lint": "tslint --project tsconfig.json --config tslint.json"
+    "lint": "tslint --project tsconfig.json --config tslint.json",
+    "prepublish": "yarn build"
   },
   "dependencies": {
     "axios": "^0.18.0",
