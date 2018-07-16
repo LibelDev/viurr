@@ -97,6 +97,7 @@ It will receive the following values :
 | `EXT` | Suggested file extension | ✔ | | | |
 
 Each `{{VARIABLE}}` will be replaced with the value.
+
 Learn more from [mustache.js](https://github.com/janl/mustache.js)
 
 ---
