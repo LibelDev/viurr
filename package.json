@@ -15,6 +15,10 @@
   "files": [
     "dist/"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kitce/viurr"
+  },
   "dependencies": {
     "axios": "^0.18.0",
     "axios-extensions": "^3.0.3",
