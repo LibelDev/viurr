@@ -2,7 +2,7 @@ import debugFactory from 'debug';
 import * as ott from '../ott';
 import {Query, Response} from './AjaxDetails.typings';
 
-const debug = debugFactory('viuer:api:vod:ajaxDetail');
+const debug = debugFactory('viurr:api:vod:ajaxDetail');
 
 /**
  * Request VOD AJAX Detail

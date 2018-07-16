@@ -11,7 +11,7 @@ import {encode} from './ffmpeg';
 import * as inspect from './inspect';
 import {Episode, Series} from './inspect.typings';
 
-const debug = debugFactory('viuer:lib:download');
+const debug = debugFactory('viurr:lib:download');
 
 const writeFile = util.promisify(fs.writeFile);
 

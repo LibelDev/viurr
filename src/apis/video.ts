@@ -4,7 +4,7 @@ import debugFactory from 'debug';
 import {apiURL} from '../constants/video';
 import {Query, Response} from './video.typings';
 
-const debug = debugFactory('viuer:api:video');
+const debug = debugFactory('viurr:api:video');
 
 const video = axios.create({
   baseURL: apiURL,

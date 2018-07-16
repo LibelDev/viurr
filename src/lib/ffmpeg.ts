@@ -2,7 +2,7 @@ import debugFactory from 'debug';
 import ffmpeg from 'fluent-ffmpeg';
 import exists from './exists';
 
-const debug = debugFactory('viuer:lib:ffmpeg');
+const debug = debugFactory('viurr:lib:ffmpeg');
 
 export const encode = (url: string, filePath: string): Promise<void> => {
   return new Promise(async (resolve, reject) => {

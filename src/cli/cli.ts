@@ -4,7 +4,7 @@ import yargs from 'yargs';
 import * as download from './commands/download';
 import * as inspect from './commands/inspect';
 
-const debug = debugFactory('viuer:cli');
+const debug = debugFactory('viurr:cli');
 
 yargs
   .command(download as yargs.CommandModule)

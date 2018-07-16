@@ -4,7 +4,7 @@ import {getDistributeWeb} from '../apis/video';
 import getVodAjaxDetail from '../apis/vod/AjaxDetail';
 import {Episode, Series} from './inspect.typings';
 
-const debug = debugFactory('viuer:lib:inspect');
+const debug = debugFactory('viurr:lib:inspect');
 
 /**
  * Inspect the details of a series

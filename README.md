@@ -1,4 +1,4 @@
-# Viuer
+# Viurr
 
 Download programmes from Viu
 
@@ -6,12 +6,12 @@ Download programmes from Viu
 
 ```bash
 # npm
-npm install -g viuer
+npm install -g viurr
 ```
 
 ```bash
 # Yarn
-yarn global add viuer
+yarn global add viurr
 ```
 
 ## Usage
@@ -22,12 +22,12 @@ yarn global add viuer
 
 ```bash
 # Inspect the details of an episode
-viuer inspect episode <productId>
+viurr inspect episode <productId>
 ```
 
 ```bash
 # Inspect details of a series
-viuer inspect series <productId>
+viurr inspect series <productId>
 ```
 
 | Option | Description |
@@ -38,12 +38,12 @@ viuer inspect series <productId>
 
 ```bash
 # Download files of an episode
-viuer download episode <type> <productId> <filePathTemplate>
+viurr download episode <type> <productId> <filePathTemplate>
 ```
 
 ```bash
 # Download files of a series
-viuer download series <type> <productId> <filePathTemplate>
+viurr download series <type> <productId> <filePathTemplate>
 ```
 
 ---
@@ -55,8 +55,8 @@ viuer download series <type> <productId> <filePathTemplate>
 Specify `--help` to see the available options of each `type`, for example :
 
 ```bash
-$ viuer download episode video --help
-viuer download episode video <productId> <filePathTemplate>
+$ viurr download episode video --help
+viurr download episode video <productId> <filePathTemplate>
 
 Download video(s) of an episode
 
@@ -98,7 +98,7 @@ Learn more from [mustache.js](https://github.com/janl/mustache.js)
 Cover image
 
 ```bash
-$ viuer download episode cover 6979 "{{SERIES_TITLE}}/{{EPISODE_NUMBER}}.{{EPISODE_TITLE}}.{{EXT}}"
+$ viurr download episode cover 6979 "{{SERIES_TITLE}}/{{EPISODE_NUMBER}}.{{EPISODE_TITLE}}.{{EXT}}"
 Downloading cover image of "6979"
 Finished : <cwd>/男兒當入樽/1.天才籃球員誕生.jpeg
 ```
@@ -106,7 +106,7 @@ Finished : <cwd>/男兒當入樽/1.天才籃球員誕生.jpeg
 Description
 
 ```bash
-$ viuer download episode description 6979 "{{SERIES_TITLE}}/{{EPISODE_NUMBER}}.{{EPISODE_TITLE}}.txt"
+$ viurr download episode description 6979 "{{SERIES_TITLE}}/{{EPISODE_NUMBER}}.{{EPISODE_TITLE}}.txt"
 Downloading description of "6979"
 Finished : <cwd>/男兒當入樽/1.天才籃球員誕生.txt
 ```
@@ -114,7 +114,7 @@ Finished : <cwd>/男兒當入樽/1.天才籃球員誕生.txt
 Subtitle
 
 ```bash
-$ viuer download episode subtitle 6979 "{{SERIES_TITLE}}/{{EPISODE_NUMBER}}.{{EPISODE_TITLE}}.{{SUBTITLE_NAME}}.srt"
+$ viurr download episode subtitle 6979 "{{SERIES_TITLE}}/{{EPISODE_NUMBER}}.{{EPISODE_TITLE}}.{{SUBTITLE_NAME}}.srt"
 Downloading subtitle of "6979" (Language ID : 1)
 Finished : <cwd>/男兒當入樽/1.天才籃球員誕生.繁體中文.srt
 ```
@@ -130,7 +130,7 @@ You can also set the absolute paths to the env `FFMPEG_PATH` and `FFPROBE_PATH` 
 Learn more from [fluent-ffmpeg](https://github.com/fluent-ffmpeg/node-fluent-ffmpeg#ffmpeg-and-ffprobe)
 
 ```bash
-$ viuer download episode video 6979 "{{SERIES_TITLE}}/{{EPISODE_NUMBER}}.{{EPISODE_TITLE}}.{{QUALITY}}.mp4" --quality 720p
+$ viurr download episode video 6979 "{{SERIES_TITLE}}/{{EPISODE_NUMBER}}.{{EPISODE_TITLE}}.{{QUALITY}}.mp4" --quality 720p
 Downloading video of "6979" (Quality : 720p)
 Finished : <cwd>/男兒當入樽/1.天才籃球員誕生.720p.mp4
 ```
@@ -149,12 +149,12 @@ Install as local module
 
 ```bash
 # npm
-$ npm install viuer --save
+$ npm install viurr --save
 ```
 
 ```bash
 # Yarn
-$ yarn add viuer
+$ yarn add viurr
 ```
 
 #### Types
@@ -200,7 +200,7 @@ interface Series {
 #### Inspect
 
 ```js
-import {inspect} from 'viuer';
+import {inspect} from 'viurr';
 ```
 
 Inspect the details of an episode
@@ -214,7 +214,7 @@ Inspect the details of a series
 #### Download
 
 ```js
-import {download} from 'viuer';
+import {download} from 'viurr';
 ```
 
 Each method exposed in `download` returns a `Promise` that resolves the rendered file path.

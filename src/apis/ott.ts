@@ -4,7 +4,7 @@ import debugFactory from 'debug';
 import {apiURL} from '../constants/ott';
 import {Query, Response} from './ott.typings';
 
-const debug = debugFactory('viuer:api:ott');
+const debug = debugFactory('viurr:api:ott');
 
 export enum PlatformFlagLabel {
   Web = 'web',
