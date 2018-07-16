@@ -50,7 +50,9 @@ viurr download series <type> <productId> <filePathTemplate>
 
 #### Options
 
-`type` : `cover` | `description` | `subtitle` | `video`
+`type`
+
+`cover` | `description` | `subtitle` | `video`
 
 Specify `--help` to see the available options of each `type`, for example :
 
@@ -67,11 +69,17 @@ Options:
          [array] [choices: "1080p", "720p", "480p", "240p"] [default: ["1080p"]]
 ```
 
-`productId` : The id that can be found in the URL on viu.com
+---
 
-For example :
+`productId`
+
+The id that can be found in the URL on viu.com, for example,
+
 URL : `https://www.viu.com/ott/hk/zh-hk/vod/6979/男兒當入樽`
+
 Product ID : `6979`
+
+---
 
 `filePathTemplate`
 
