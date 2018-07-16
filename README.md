@@ -148,7 +148,7 @@ Finished : <cwd>/男兒當入樽/1.天才籃球員誕生.720p.mp4
 
 It is recommended to use `inspect` to see the available subtitles and video qualities before attempting to download the files.
 
-`series` is a shortcut to `episode` to handle all available episodes in a series.
+`download series` is a shortcut to `download episode` to handle all available episodes in a series.
 
 When using `download series` , make sure to construct the `filePathTemplate` correctly with unique episode values (e.g. `EPISODE_NUMBER`, `EPISODE_TITLE`) to avoid file conflicts, the program will be terminated if it tries to write to an existing file.
 
