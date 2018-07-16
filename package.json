@@ -1,6 +1,6 @@
 {
   "name": "viurr",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Download programmes from Viu",
   "main": "./dist/index.js",
   "author": "kitce",
@@ -11,6 +11,9 @@
     "lint": "tslint --project tsconfig.json --config tslint.json",
     "prepublishOnly": "yarn build"
   },
+  "files" :[
+    "dist/"
+  ],
   "dependencies": {
     "axios": "^0.18.0",
     "axios-extensions": "^3.0.3",
