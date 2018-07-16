@@ -4,6 +4,8 @@ Download programmes from Viu
 
 ## Install
 
+If you have already installed `node>=8` and `npm`/`yarn`, you can install Viurr globally to make it available in `PATH`.
+
 ```bash
 # npm
 npm install -g viurr
@@ -13,6 +15,14 @@ npm install -g viurr
 # Yarn
 yarn global add viurr
 ```
+
+Otherwise, you could download the pre-build executables :
+
+- [Linux](https://github.com/kitce/viurr/raw/master/builds/viurr-linux)
+- [macOS](https://github.com/kitce/viurr/raw/master/builds/viurr-macos)
+- [Windows](https://github.com/kitce/viurr/raw/master/builds/viurr-win.exe)
+
+You may want to rename the executable to `viurr`, then put it in your `PATH` or any directory you want to execute from.
 
 ## Usage
 
