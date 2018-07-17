@@ -18,9 +18,9 @@ yarn global add viurr
 
 Otherwise, you could download the pre-build executables :
 
-- [Linux](https://github.com/kitce/viurr/releases/download/1.0.1/viurr-linux)
-- [macOS](https://github.com/kitce/viurr/releases/download/1.0.1/viurr-macos)
-- [Windows](https://github.com/kitce/viurr/releases/download/1.0.1/viurr-win.exe)
+- [Linux](https://github.com/kitce/viurr/releases/download/1.0.2/viurr-linux)
+- [macOS](https://github.com/kitce/viurr/releases/download/1.0.2/viurr-macos)
+- [Windows](https://github.com/kitce/viurr/releases/download/1.0.2/viurr-win.exe)
 
 You may want to rename the executable to `viurr`, then put it in your `PATH` or any directory you want to execute from.
 
