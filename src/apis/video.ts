@@ -8,7 +8,10 @@ const debug = debugFactory('viurr:api:video');
 
 const video = axios.create({
   baseURL: apiURL,
-  headers: {'Accept-Encoding': 'gzip, deflate, br'},
+  headers: {
+    'Origin': 'https://www.viu.com',
+    'Accept-Encoding': 'gzip, deflate, br'
+  },
   adapter: throttleAdapterEnhancer(cacheAdapterEnhancer(axios.defaults.adapter as AxiosAdapter))
 });
 
@@ -19,12 +22,29 @@ const video = axios.create({
  * @param {Query} query
  * @returns {Promise<Response>}
  */
-export const getDistributeWeb = (query: Query): Promise<Response> => {
+export const getDistributeWeb = (query: Query, productId: string): Promise<Response> => {
   const url = 'distribute_web_hk.php';
-  const config = {params: query};
+  const headers = getHeaders(productId);
+  const config = {params: query, headers};
   debug('fetching', url, config);
-  return video.get(url, config)
+  const promise = video.get(url, config)
     .then(res => res.data);
+  promise.then(data => debug(url, data));
+  return promise;
 };
+
+/**
+ * Get the request headers
+ *
+ * @private
+ * @param {string} productId
+ * @returns The request headers
+ */
+function getHeaders (productId: string) {
+  const refererBase = 'https://www.viu.com/ott/hk/zh-hk/vod/';
+  return {
+    Referer: `${refererBase}${productId ? productId + '/' : ''}`
+  };
+}
 
 export default video;

@@ -13,7 +13,10 @@ export enum PlatformFlagLabel {
 
 const ott = axios.create({
   baseURL: apiURL,
-  headers: {'Accept-Encoding': 'gzip, deflate, br'},
+  headers: {
+    'Origin': 'https://www.viu.com',
+    'Accept-Encoding': 'gzip, deflate, br'
+  },
   adapter: throttleAdapterEnhancer(cacheAdapterEnhancer(axios.defaults.adapter as AxiosAdapter))
 });
 
@@ -27,7 +30,8 @@ const ott = axios.create({
 export const getIndex = (query: Query): Promise<Response> => {
   const url = 'index.php';
   const params = getQuery(query);
-  const config = {params};
+  const headers = getHeaders(query);
+  const config = {params, headers};
   debug('fetching', url, config);
   return ott.get(url, config)
     .then(res => res.data);
@@ -48,6 +52,21 @@ function getQuery (query: Query): Query {
   return {
     ...defaults,
     ...query
+  };
+}
+
+/**
+ * Get the request headers
+ *
+ * @private
+ * @param {string} productId
+ * @returns The request headers
+ */
+function getHeaders (query: Query) {
+  const {product_id} = query;
+  const refererBase = 'https://www.viu.com/ott/hk/zh-hk/vod/';
+  return {
+    Referer: `${refererBase}${product_id ? product_id + '/' : ''}`
   };
 }
 
