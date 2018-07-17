@@ -3,7 +3,7 @@ export interface Query {
 }
 
 export interface Response {
-  data: Data;
+  data?: Data;
   status: Status;
   server: Server;
 }
@@ -25,7 +25,7 @@ interface Size {
   s1080p: number;
 }
 
-interface URL {
+export interface URL {
   s240p: string;
   s480p: string;
   s720p: string;

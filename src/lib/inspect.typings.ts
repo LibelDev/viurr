@@ -1,4 +1,4 @@
-import {Response} from '../apis/video.typings';
+import {Response, URL} from '../apis/video.typings';
 
 interface Subtitle {
   name: string;
@@ -15,7 +15,7 @@ interface BasicEpisode {
 }
 
 export interface Episode extends BasicEpisode {
-  urls: Response['data']['stream']['url'];
+  urls: URL;
   subtitles: Subtitle[];
 }
 
