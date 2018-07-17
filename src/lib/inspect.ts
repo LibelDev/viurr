@@ -43,8 +43,13 @@ export const episode = async (productId: string): Promise<Episode> => {
   const {current_product} = vodAjaxDetailResponse.data;
   if (!current_product) throw new Error(`Product "${productId}" not found`);
   const {ccs_product_id, number: _number, synopsis, description, subtitle, cover_image_url} = current_product;
-  const distributeWebResponse = await getDistributeWeb({ccs_product_id});
-  const {url} = distributeWebResponse.data.stream;
+  const distributeWebResponse = await getDistributeWeb({ccs_product_id}, productId);
+  const {data, status} = distributeWebResponse;
+  if (!data || !status || status.code !== 0) {
+    debug('status', status);
+    throw new Error(`Cannot fetch the data of product "${productId}"`);
+  }
+  const {url} = data.stream;
   const subtitles = compact(subtitle);
   return {
     productId,
