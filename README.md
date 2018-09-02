@@ -16,11 +16,7 @@ npm install -g viurr
 yarn global add viurr
 ```
 
-Otherwise, you could download the pre-build executables :
-
-- [Linux](https://github.com/kitce/viurr/releases/download/1.0.2/viurr-linux)
-- [macOS](https://github.com/kitce/viurr/releases/download/1.0.2/viurr-macos)
-- [Windows](https://github.com/kitce/viurr/releases/download/1.0.2/viurr-win.exe)
+Otherwise, you could [download the pre-build executables](https://github.com/kitce/viurr/releases)
 
 You may want to rename the executable to `viurr`, then put it in your `PATH` or any directory you want to execute from.
 
@@ -100,7 +96,7 @@ It will receive the following values :
 | --- | --- | :---: | :---: | :---: | :---: |
 | `PRODUCT_ID` | Product ID  | ✔ | ✔ | ✔ | ✔ |
 | `SERIES_TITLE` | Series title | ✔ | ✔ | ✔ | ✔ |
-| `EPISODE_NUMBER` | Episode Number | ✔ | ✔ | ✔ | ✔ |
+| `EPISODE_NUMBER` | Episode number | ✔ | ✔ | ✔ | ✔ |
 | `EPISODE_TITLE` | Episode title | ✔ | ✔ | ✔ | ✔ |
 | `QUALITY` | Video quality | | | | ✔ |
 | `SUBTITLE_NAME` | Subtitle name/language | | | ✔ | |
@@ -140,7 +136,7 @@ Finished : <cwd>/男兒當入樽/1.天才籃球員誕生.繁體中文.srt
 
 Video
 
-This program uses ffmpeg to encode the HLS playlist file and output the video with the original codecs. (i.e. `-vcodec copy -acodec copy`)
+This program uses ffmpeg to encode the HLS playlist file and output the video with the original codecs. (i.e. `-c copy`)
 
 Therefore, ffmpeg and ffprobe need to be available in `PATH`.
 
@@ -156,11 +152,9 @@ Finished : <cwd>/男兒當入樽/1.天才籃球員誕生.720p.mp4
 
 #### Note
 
-It is recommended to use `inspect` to see the available subtitles and video qualities before attempting to download the files.
-
-`download series` is a shortcut to `download episode` to handle all available episodes in a series.
-
-When using `download series` , make sure to construct the `filePathTemplate` correctly with unique episode values (e.g. `EPISODE_NUMBER`, `EPISODE_TITLE`) to avoid file conflicts, the program will be terminated if it tries to write to an existing file.
+- `download series` is a shortcut to `download episode` to handle all available episodes in a series.
+- When using `download series` , make sure to construct the `filePathTemplate` correctly with unique episode values (e.g. `EPISODE_NUMBER` or `EPISODE_TITLE`) to avoid file conflicts, the program will be terminated if it tries to write to an existing file.
+- It is recommended to use `inspect` to see the available subtitles and video qualities before attempting to download the files.
 
 ### Programmatic
 
