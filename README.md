@@ -248,6 +248,12 @@ Download the video in specific quality
 
 `download.video(productId: string, filePathTemplate: string, quality: QualityChoice): Promise<string>`
 
+## TODO
+- Default filename
+- Progress bar
+- Option to overwrite existing file
+- Interactive CLI
+
 ## Contribute
 
 ```bash
