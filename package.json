@@ -13,6 +13,7 @@
   "scripts": {
     "clean:build": "rm -rf dist",
     "prebuild": "yarn clean:build",
+    "cli": "ts-node src/cli/cli.ts",
     "build": "tsc",
     "lint": "eslint src/**",
     "clean:release": "rm -rf bin/viurr-*",

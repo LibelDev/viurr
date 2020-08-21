@@ -1,11 +1,11 @@
-import yargs from 'yargs';
+import { Argv, Arguments } from 'yargs';
 
-export interface Options extends yargs.Arguments {
+export interface ICommandArguments extends Arguments {
   productId: string;
   json: boolean;
 }
 
-export default (yargs: yargs.Argv) => (
+export default (yargs: Argv): Argv => (
   yargs
     .option('json', {
       boolean: true,

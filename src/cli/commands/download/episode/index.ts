@@ -1,4 +1,4 @@
-import yargs from 'yargs';
+import { Argv } from 'yargs';
 import * as cover from './cover';
 import * as description from './description';
 import * as subtitle from './subtitle';
@@ -8,7 +8,7 @@ export const command = 'episode';
 
 export const describe = 'Download files of an episode';
 
-export const builder = (yargs: yargs.Argv) => (
+export const builder = (yargs: Argv): Argv => (
   yargs
     .command(cover)
     .command(description)

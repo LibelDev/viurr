@@ -1,6 +1,6 @@
-import yargs from 'yargs';
+import { Arguments } from 'yargs';
 
-export interface CommandArguments extends yargs.Arguments {
+export interface ICommandArguments extends Arguments {
   productId: string;
-  filePathTemplate: string;
+  filepath: string;
 }

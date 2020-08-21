@@ -1,16 +1,17 @@
-import * as inspect from '../../../../lib/inspect';
+import * as inspect from '../../../../inspect';
 import * as description from '../episode/description';
 
-export const command = 'description <productId> <filePathTemplate>';
+export const command = 'description <productId> <filepath>';
 
 export const describe = 'Download descriptions of a series';
 
-export const handler = async (argv: description.Options) => {
-  const {productId} = argv;
+export const handler = async (argv: description.Options): Promise<void> => {
+  const { productId } = argv;
   const series = await inspect.series(productId);
-  const {episodes} = series;
-  for (const {productId} of episodes) {
-    const _argv = {...argv, productId} as description.Options;
+  const { episodes } = series;
+  for (const episode of episodes) {
+    const { productId } = episode;
+    const _argv = { ...argv, productId } as description.Options;
     await description.handler(_argv);
   }
 };
