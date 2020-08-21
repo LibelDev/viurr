@@ -138,5 +138,5 @@ interface ISubtitle {
   url: string;
   is_default: number;
   product_subtitle_id: string;
-  product_subtitle_language_id: string;
+  product_subtitle_language_id: LanguageFlag;
 }

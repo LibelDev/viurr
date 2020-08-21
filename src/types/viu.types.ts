@@ -37,10 +37,10 @@ export enum Quality {
 export type QualityOption = keyof typeof Quality;
 
 export enum LanguageFlag {
-  TraditionalChinese = 1,
-  English = 3,
-  Indonesian = 7,
-  Thai = 8
+  TraditionalChinese = '1',
+  English = '3',
+  Indonesian = '7',
+  Thai = '8'
 }
 
 export enum SubtitleLanguageCode {

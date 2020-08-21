@@ -10,7 +10,7 @@ import * as inspect from './inspect';
 import exists from './lib/exists';
 import { encode } from './lib/ffmpeg';
 import { fetchImageWithMetadata } from './lib/image';
-import { IEpisode, ISeries, Quality, QualityOption, SubtitleLanguageCode } from './types/viu.types';
+import { IEpisode, ISeries, Quality, QualityOption, LanguageFlag, SubtitleLanguageCode } from './types/viu.types';
 
 const debug = debugFactory('viurr:download');
 
@@ -113,10 +113,10 @@ export const cover = async (productId: string, filename?: string): Promise<strin
  * @async
  * @param {string} productId
  * @param {string} [filename] default: episode title
- * @param {string} [languageId] default: `"1"`
+ * @param {string} [languageId] default: LanguageFlag.TraditionalChinese
  * @returns {Promise<string>} The output filepath
  */
-export const subtitle = async (productId: string, filename?: string, languageId = '1'): Promise<string> => {
+export const subtitle = async (productId: string, filename?: string, languageId = LanguageFlag.TraditionalChinese): Promise<string> => {
   const series = await inspect.series(productId);
   const episode = await inspect.episode(productId);
   const { subtitles } = episode;
