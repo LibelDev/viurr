@@ -44,12 +44,12 @@ viurr inspect series <productId>
 
 ```bash
 # Download files of an episode
-viurr download episode <type> <productId> <filePathTemplate>
+viurr download episode <type> <productId> <filepathTemplate>
 ```
 
 ```bash
 # Download files of a series
-viurr download series <type> <productId> <filePathTemplate>
+viurr download series <type> <productId> <filepathTemplate>
 ```
 
 ---
@@ -64,7 +64,7 @@ Specify `--help` to see the available options of each `type`, for example :
 
 ```bash
 $ viurr download episode video --help
-viurr download episode video <productId> <filePathTemplate>
+viurr download episode video <productId> <filepathTemplate>
 
 Download video(s) of an episode
 
@@ -87,7 +87,7 @@ Product ID : `6979`
 
 ---
 
-`filePathTemplate`
+`filepathTemplate`
 
 The path template for the output files, can be relative or absolute.
 It will receive the following values :
@@ -153,7 +153,7 @@ Finished : <cwd>/男兒當入樽/1.天才籃球員誕生.720p.mp4
 #### Note
 
 - `download series` is a shortcut to `download episode` to handle all available episodes in a series.
-- When using `download series` , make sure to construct the `filePathTemplate` correctly with unique episode values (e.g. `EPISODE_NUMBER` or `EPISODE_TITLE`) to avoid file conflicts, the program will be terminated if it tries to write to an existing file.
+- When using `download series` , make sure to construct the `filepathTemplate` correctly with unique episode values (e.g. `EPISODE_NUMBER` or `EPISODE_TITLE`) to avoid file conflicts, the program will be terminated if it tries to write to an existing file.
 - It is recommended to use `inspect` to see the available subtitles and video qualities before attempting to download the files.
 
 ### Programmatic
@@ -234,19 +234,19 @@ Each method exposed in `download` returns a `Promise` that resolves the rendered
 
 Download the cover image
 
-`download.cover(productId: string, filePathTemplate: string): Promise<string>`
+`download.cover(productId: string, filepathTemplate: string): Promise<string>`
 
 Save the description as plain text file
 
-`download.description(productId: string, filePathTemplate: string): Promise<string>`
+`download.description(productId: string, filepathTemplate: string): Promise<string>`
 
 Download the subtitle in specific language
 
-`download.subtitle(productId: string, filePathTemplate: string, languageId: string): Promise<string>`
+`download.subtitle(productId: string, filepathTemplate: string, languageId: string): Promise<string>`
 
 Download the video in specific quality
 
-`download.video(productId: string, filePathTemplate: string, quality: QualityChoice): Promise<string>`
+`download.video(productId: string, filepathTemplate: string, quality: QualityChoice): Promise<string>`
 
 ## TODO
 - Default filename

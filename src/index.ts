@@ -1,5 +1,5 @@
-import * as download from './lib/download';
-import * as inspect from './lib/inspect';
+import * as download from './download';
+import * as inspect from './inspect';
 
 export {
   download,

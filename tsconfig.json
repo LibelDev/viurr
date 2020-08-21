@@ -8,7 +8,11 @@
     ],
     "strict": true,
     "esModuleInterop": true,
-    "rootDir": "./src",
-    "outDir": "./dist"
-  }
+    "rootDir": "src",
+    "outDir": "dist",
+    "declaration": true,
+  },
+  "exclude": [
+    "src/test"
+  ]
 }

@@ -1,11 +1,17 @@
 import fs from 'fs';
-import util from 'util';
 
-const access = util.promisify(fs.access);
+const { access } = fs.promises;
 
-export default async (filePath: string): Promise<boolean> => {
+/**
+ * Check whether the given filepath exists
+ * 
+ * @async
+ * @param {string} filepath
+ * @returns {Boolean} `true` if the filepath exists, otherwise `false`
+ */
+export default async (filepath: string): Promise<boolean> => {
   try {
-    await access(filePath);
+    await access(filepath);
     return true;
   } catch (err) {
     if (err.code === 'ENOENT') {

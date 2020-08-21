@@ -1,27 +1,44 @@
+import { spawn } from 'child_process';
 import debugFactory from 'debug';
-import ffmpeg from 'fluent-ffmpeg';
-import exists from './exists';
+import config from '../config/config';
 
 const debug = debugFactory('viurr:lib:ffmpeg');
 
-export const encode = (url: string, filePath: string): Promise<void> => {
+const { ffmpeg } = config.executables;
+
+/**
+ * Encode with FFmpeg, throws process exit signal on error
+ * 
+ * @async
+ * @param {string[]} args arguments being passed to FFmpeg
+ */
+export const encode = (args: string[]): Promise<void> => {
+  debug('args:', args);
+
+  // eslint-disable-next-line no-async-promise-executor
   return new Promise(async (resolve, reject) => {
-    if (await exists(filePath)) {
-      const err = new Error(`${filePath} already exists`);
-      return reject(err);
-    }
-    const command = ffmpeg(url)
-      .videoCodec('copy')
-      .audioCodec('copy')
-      .save(filePath);
-    command.on('start', (commandLine) => {
-      debug('start encoding', filePath);
-      debug('command :', commandLine);
+    const process = spawn(ffmpeg, args);
+
+    process.stdout.on('data', (data) => {
+      debug('stdout', data.toString());
     });
-    command.on('end', () => {
-      debug('finished :', filePath);
+
+    process.stderr.on('data', (data) => {
+      debug('stderr', data.toString());
     });
-    command.on('end', () => resolve());
-    command.on('error', reject);
+
+    process.on('close', (code, signal) => {
+      debug('child process exited with code: %s, signal: %s', code, signal);
+      switch (code) {
+        case 0: {
+          resolve();
+          break;
+        }
+        default: {
+          reject(signal);
+          break;
+        }
+      }
+    });
   });
 };

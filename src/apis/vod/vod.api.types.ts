@@ -1,31 +1,31 @@
-import {PlatformFlagLabel} from '../ott';
-import * as OTT from '../ott.typings';
+import { Index, PlatformFlagLabel } from '../ott/ott.api.types';
+import { LanguageFlag, SubtitleLanguageCode } from '../../types/viu.types';
 
-export interface Query extends OTT.Query {
+export interface IQuery extends Index.IQuery {
   r?: string;
   platform_flag_label?: PlatformFlagLabel;
   area_id?: string | number;
-  product_id: string | number;
+  language_flag_id?: LanguageFlag;
   ut?: string | number;
 }
 
-export interface Response extends OTT.Response {
-  data: Data;
+export interface IResponse extends Index.IResponse {
+  data: IData;
 }
 
-interface Data {
-  current_product?: CurrentProduct;
-  series?: Series;
-  series_prediction_actor?: any;
-  series_prediction_category?: SeriesPredictionCategory[];
-  series_prediction?: SeriesPredictionCategory[];
-  movie_prediction_actor?: any;
-  movie_prediction_category?: any;
-  movie_prediction?: any;
+interface IData {
+  current_product?: ICurrentProduct;
+  series?: ISeries;
+  series_prediction_actor?: unknown;
+  series_prediction_category?: ISeriesPredictionCategory[];
+  series_prediction?: ISeriesPredictionCategory[];
+  movie_prediction_actor?: unknown;
+  movie_prediction_category?: unknown;
+  movie_prediction?: unknown;
   is_follow: number;
 }
 
-interface SeriesPredictionCategory {
+interface ISeriesPredictionCategory {
   series_id: string;
   series_name: string;
   series_description: string;
@@ -41,7 +41,7 @@ interface SeriesPredictionCategory {
   is_parental_lock_limited: string;
 }
 
-interface Series {
+interface ISeries {
   name: string;
   description: string;
   product_total: string;
@@ -52,35 +52,35 @@ interface Series {
   schedule_end_time: string;
   cover_image_url: string;
   update_cycle_description: string;
-  cp_logo_url?: any;
-  series_language?: any;
+  cp_logo_url?: unknown;
+  series_language?: unknown;
   allow_chromecast_play_big_screen: string;
   allow_airplay_play_big_screen: string;
   is_watermark: string;
-  product: Product[];
-  actor?: any;
-  tag: Tag[];
-  series_tag: SeriesTag[];
+  product: IProduct[];
+  actor?: unknown;
+  tag: ITag[];
+  series_tag: ISeriesTag[];
 }
 
-interface SeriesTag {
+interface ISeriesTag {
   id: number;
   type: string;
-  tags: Tag2[];
+  tags: ITag2[];
 }
 
-interface Tag2 {
+interface ITag2 {
   tag_id: string;
   name: string;
 }
 
-interface Tag {
+interface ITag {
   id: string;
   name: string;
   type: string;
 }
 
-interface Product {
+interface IProduct {
   product_id: string;
   number: string;
   synopsis: string;
@@ -94,7 +94,7 @@ interface Product {
   allow_download: number;
 }
 
-interface CurrentProduct {
+interface ICurrentProduct {
   series_id: string;
   product_id: string;
   number: string;
@@ -107,9 +107,9 @@ interface CurrentProduct {
   ccs_product_id: string;
   allow_download: string;
   share_url: string;
-  subtitle: (Subtitle | undefined)[];
-  focus?: any;
-  ad: Ad[];
+  subtitle: (ISubtitle | undefined)[];
+  focus?: unknown;
+  ad: IAd[];
   is_movie: number;
   is_parental_lock_limited: string;
   allow_play_big_screen: string;
@@ -117,24 +117,24 @@ interface CurrentProduct {
   play_big_screen_end_time: string;
   allow_chromecast_play_big_screen: number;
   allow_airplay_play_big_screen: number;
-  product_tag: any[];
+  product_tag: unknown[];
 }
 
-interface Ad {
+interface IAd {
   position: number;
-  code_list: Codelist[];
+  code_list: ICodelist[];
   start_time: string;
 }
 
-interface Codelist {
+interface ICodelist {
   ad_stuff: string;
-  ad_track?: any;
+  ad_track?: unknown;
   ad_is_user_pay: string;
   ima_force: number;
 }
 
-interface Subtitle {
-  name: string;
+interface ISubtitle {
+  name: keyof typeof SubtitleLanguageCode;
   url: string;
   is_default: number;
   product_subtitle_id: string;
