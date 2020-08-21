@@ -40,7 +40,7 @@ export const video = async (productId: string, filename?: string, quality: Quali
     QUALITY: quality
   };
   const fileExtension = 'mkv';
-  const _filename = filenamify(filename || `${episode.title}.${fileExtension}`);
+  const _filename = filenamify(filename || `${episode.number} - ${episode.title}.${fileExtension}`);
   const filepath = mustache.render(_filename, filenameTemplateValues);
   if (await exists(filepath)) {
     throw new Error(`${filepath} already exists`);
@@ -70,6 +70,7 @@ export const video = async (productId: string, filename?: string, quality: Quali
   }
   args.push('-f', 'matroska');
   args.push('-c', 'copy');
+  args.push('-progress', '-', '-nostats');
   args.push(_filepath);
   await encode(args);
   return _filepath;
@@ -94,7 +95,7 @@ export const cover = async (productId: string, filename?: string): Promise<strin
     EXT: extension
   };
   const fileExtension = extension;
-  const _filename = filenamify(filename || `${episode.title}.${fileExtension}`);
+  const _filename = filenamify(filename || `${episode.number} - ${episode.title}.${fileExtension}`);
   const filepath = mustache.render(_filename, filenameTemplateValues);
   if (await exists(filepath)) {
     throw new Error(`${filepath} already exists`);
@@ -133,7 +134,7 @@ export const subtitle = async (productId: string, filename?: string, languageId 
     LANGUAGE_CODE: SubtitleLanguageCode[subtitle.name]
   };
   const fileExtension = 'srt';
-  const _filename = filenamify(filename || `${episode.title}.${fileExtension}`);
+  const _filename = filenamify(filename || `${episode.number} - ${episode.title}.${fileExtension}`);
   const filepath = mustache.render(_filename, filenameTemplateValues);
   if (await exists(filepath)) {
     throw new Error(`${filepath} already exists`);
@@ -160,7 +161,7 @@ export const description = async (productId: string, filename: string): Promise<
   const episode = await inspect.episode(productId);
   const filenameTemplateValues = getFilenameTemplateValues(series, episode);
   const fileExtension = 'txt';
-  const _filename = filenamify(filename || `${episode.title}.${fileExtension}`);
+  const _filename = filenamify(filename || `${episode.number} - ${episode.title}.${fileExtension}`);
   const filepath = mustache.render(_filename, filenameTemplateValues);
   if (await exists(filepath)) {
     throw new Error(`${filepath} already exists`);
