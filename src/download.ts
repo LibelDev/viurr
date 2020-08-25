@@ -70,9 +70,9 @@ export const video = async (productId: string, filename?: string, quality: Quali
   }
   args.push('-f', 'matroska');
   args.push('-c', 'copy');
-  args.push('-progress', '-', '-nostats');
   args.push(_filepath);
-  await encode(args);
+  const status = await encode(args);
+  debug('final status', status);
   return _filepath;
 };
 
