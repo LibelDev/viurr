@@ -4,7 +4,7 @@ Download programmes from Viu
 
 ## Install
 
-If you have already installed `node>=8` and `npm`/`yarn`, you can install Viurr globally to make it available in `PATH`.
+If you have already installed `node>=12` and `npm`/`yarn`, you can install Viurr globally to make it available in `PATH`.
 
 ```bash
 # npm
@@ -44,12 +44,12 @@ viurr inspect series <productId>
 
 ```bash
 # Download files of an episode
-viurr download episode <type> <productId> <filepathTemplate>
+viurr download episode <type> <productId> [filepath]
 ```
 
 ```bash
 # Download files of a series
-viurr download series <type> <productId> <filepathTemplate>
+viurr download series <type> <productId> [filepath]
 ```
 
 ---
@@ -60,19 +60,19 @@ viurr download series <type> <productId> <filepathTemplate>
 
 `cover` | `description` | `subtitle` | `video`
 
-Specify `--help` to see the available options of each `type`, for example :
+Specify `--help` to see the available options of each `type`, for example:
 
 ```bash
 $ viurr download episode video --help
-viurr download episode video <productId> <filepathTemplate>
+viurr download episode video <productId> [filepath]
 
-Download video(s) of an episode
+Download video of an episode
 
 Options:
   --help     Show help                                                 [boolean]
   --version  Show version number                                       [boolean]
   --quality  Video quality
-         [array] [choices: "1080p", "720p", "480p", "240p"] [default: ["1080p"]]
+          [string] [choices: "1080p", "720p", "480p", "240p"] [default: "1080p"]
 ```
 
 ---
@@ -81,16 +81,16 @@ Options:
 
 The id that can be found in the URL on viu.com, for example,
 
-URL : `https://www.viu.com/ott/hk/zh-hk/vod/6979/男兒當入樽`
+URL: `https://www.viu.com/ott/hk/zh-hk/vod/6979/男兒當入樽`
 
-Product ID : `6979`
+Product ID: `6979`
 
 ---
 
-`filepathTemplate`
+`filepath` *Optional*
 
 The path template for the output files, can be relative or absolute.
-It will receive the following values :
+It will receive the following values:
 
 | Variable | Description | `cover` | `description` | `subtitle` | `video` |
 | --- | --- | :---: | :---: | :---: | :---: |
@@ -113,47 +113,48 @@ Learn more from [mustache.js](https://github.com/janl/mustache.js)
 Cover image
 
 ```bash
-$ viurr download episode cover 6979 "{{SERIES_TITLE}}/{{EPISODE_NUMBER}}.{{EPISODE_TITLE}}.{{EXT}}"
-Downloading cover image of "6979"
-Finished : <cwd>/男兒當入樽/1.天才籃球員誕生.jpeg
+$ viurr download episode cover 6979
+Downloading cover image of "男兒當入樽" EP.1 "天才籃球員誕生"
+Downloaded: /Users/kit.lee/Workspace/Personal/viurr/1-天才籃球員誕生.jpeg
 ```
 
 Description
 
 ```bash
-$ viurr download episode description 6979 "{{SERIES_TITLE}}/{{EPISODE_NUMBER}}.{{EPISODE_TITLE}}.txt"
-Downloading description of "6979"
-Finished : <cwd>/男兒當入樽/1.天才籃球員誕生.txt
+$ viurr download episode description 6979
+Downloading description of "男兒當入樽" EP.1 "天才籃球員誕生"
+Downloaded: /Users/kit.lee/Workspace/Personal/viurr/1-天才籃球員誕生.txt
 ```
 
 Subtitle
 
 ```bash
-$ viurr download episode subtitle 6979 "{{SERIES_TITLE}}/{{EPISODE_NUMBER}}.{{EPISODE_TITLE}}.{{SUBTITLE_NAME}}.srt"
-Downloading subtitle of "6979" (Language ID : 1)
-Finished : <cwd>/男兒當入樽/1.天才籃球員誕生.繁體中文.srt
+$ viurr download episode subtitle 6979
+Downloading subtitle of "男兒當入樽" EP.1 "天才籃球員誕生" (Language ID: 1)
+Downloaded: /Users/kit.lee/Workspace/Personal/viurr/1-天才籃球員誕生.chi.srt
 ```
 
 Video
 
-This program uses ffmpeg to encode the HLS playlist file and output the video with the original codecs. (i.e. `-c copy`)
+This program uses FFmpeg to encode the HLS playlist file and output the video with the original codecs. (i.e. `-c copy`), the executable FFmpeg and FFprobe are already included.
 
-Therefore, ffmpeg and ffprobe need to be available in `PATH`.
-
-You can also set the absolute paths to the env `FFMPEG_PATH` and `FFPROBE_PATH` to use the specified executables.
-
-Learn more from [fluent-ffmpeg](https://github.com/fluent-ffmpeg/node-fluent-ffmpeg#ffmpeg-and-ffprobe)
+You may also set the absolute paths to the environment variables `FFMPEG_PATH` and `FFPROBE_PATH` to use the specified executables.
 
 ```bash
-$ viurr download episode video 6979 "{{SERIES_TITLE}}/{{EPISODE_NUMBER}}.{{EPISODE_TITLE}}.{{QUALITY}}.mp4" --quality 720p
-Downloading video of "6979" (Quality : 720p)
-Finished : <cwd>/男兒當入樽/1.天才籃球員誕生.720p.mp4
+$ viurr download episode video 6979
+Downloading video of "男兒當入樽" EP.1 "天才籃球員誕生" (Quality: 1080p)
+
+# encode in progress
+Encoding [208.47/fps] [1745.6 Kb/s] [22.25 MB] [00:01:46]
+
+# after finished
+Downloaded: /Users/kit.lee/Workspace/Personal/viurr/1-天才籃球員誕生.mkv
 ```
 
 #### Note
 
 - `download series` is a shortcut to `download episode` to handle all available episodes in a series.
-- When using `download series` , make sure to construct the `filepathTemplate` correctly with unique episode values (e.g. `EPISODE_NUMBER` or `EPISODE_TITLE`) to avoid file conflicts, the program will be terminated if it tries to write to an existing file.
+- When using `download series` , make sure to construct the `filepath` correctly with unique episode values (e.g. `EPISODE_NUMBER` or `EPISODE_TITLE`) to avoid file conflicts, the program will be terminated if it tries to write to an existing file.
 - It is recommended to use `inspect` to see the available subtitles and video qualities before attempting to download the files.
 
 ### Programmatic
@@ -173,15 +174,13 @@ yarn add viurr
 #### Types
 
 ```ts
-type QualityChoice = "1080p" | "720p" | "480p" | "240p";
-
-interface Subtitle {
-  name: string;
+interface ISubtitle {
+  name: keyof typeof SubtitleLanguageCode;
   url: string;
   languageId: string;
 }
 
-interface BasicEpisode {
+interface IEpisodeBase {
   productId: string;
   number: number;
   title: string;
@@ -189,70 +188,94 @@ interface BasicEpisode {
   coverImageURL: string;
 }
 
-interface URL {
+interface IEpisode extends IEpisodeBase {
+  urls: IURL;
+  subtitles: ISubtitle[];
+}
+
+interface ISeries {
+  title: string;
+  description: string;
+  coverImageURL: string;
+  total: number;
+  episodes: IEpisodeBase[];
+}
+
+interface IURL {
   s240p: string;
   s480p: string;
   s720p: string;
   s1080p: string;
 }
 
-interface Episode extends BasicEpisode {
-  urls: URL;
-  subtitles: Subtitle[];
+enum Quality {
+  '1080p' = 's1080p',
+  '720p' = 's720p',
+  '480p' = 's480p',
+  '240p' = 's240p'
 }
 
-interface Series {
-  title: string;
-  description: string;
-  coverImageURL: string;
-  total: number;
-  episodes: BasicEpisode[];
+type QualityOption = keyof typeof Quality;
+
+enum LanguageFlag {
+  TraditionalChinese = '1',
+  English = '3',
+  Indonesian = '7',
+  Thai = '8'
+}
+
+enum SubtitleLanguageCode {
+  '繁體中文' = 'chi', // 1
+  'English' = 'eng', // 3
+  'Indo' = 'ind', // 7
+  'ภาษาไทย' = 'tha', // 8
+  'Undefined' = 'und' // default
 }
 ```
+
+Learn more [here](https://github.com/kitce/viurr/blob/master/src/types/viu.types.ts)
 
 #### Inspect
 
 ```js
-import {inspect} from 'viurr';
+import { inspect } from 'viurr';
 ```
 
 Inspect the details of an episode
 
-`inspect.episode(productId: string): Promise<Episode>`
+`inspect.episode(productId: string): Promise<IEpisode>`
 
 Inspect the details of a series
 
-`inspect.series(productId: string): Promise<Series>`
+`inspect.series(productId: string): Promise<ISeries>`
 
 #### Download
 
 ```js
-import {download} from 'viurr';
+import { download } from 'viurr';
 ```
-
-Each method exposed in `download` returns a `Promise` that resolves the rendered file path.
 
 Download the cover image
 
-`download.cover(productId: string, filepathTemplate: string): Promise<string>`
+`download.cover(productId: string, filename?: string): Promise<[ISeries, IEpisode, string]>`
 
 Save the description as plain text file
 
-`download.description(productId: string, filepathTemplate: string): Promise<string>`
+`download.description(productId: string, filename?: string): Promise<[ISeries, IEpisode, string]>`
 
-Download the subtitle in specific language
+Download the subtitle in specific language in SRT format
 
-`download.subtitle(productId: string, filepathTemplate: string, languageId: string): Promise<string>`
+`download.subtitle(productId: string, filename?: string, languageId = LanguageFlag.TraditionalChinese): Promise<[ISeries, IEpisode, string]>`
 
 Download the video in specific quality
 
-`download.video(productId: string, filepathTemplate: string, quality: QualityChoice): Promise<string>`
+`download.video(productId: string, filename?: string, quality: QualityChoice = '1080p'): Promise<[ISeries, IEpisode, string, ReturnType<typeof encode>]>`
 
 ## TODO
-- Default filename
-- Progress bar
-- Option to overwrite existing file
-- Interactive CLI
+- [x] Default filename
+- [x] Progress bar
+- [ ] Option to overwrite existing file
+- [ ] Interactive CLI
 
 ## Contribute
 
