@@ -3,7 +3,7 @@ import * as video from '../episode/video';
 
 const { builder } = video;
 
-export const command = 'video <productId> <filepath>';
+export const command = 'video <productId> [filepath]';
 
 export const describe = 'Download videos of a series';
 

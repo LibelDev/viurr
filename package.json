@@ -33,11 +33,13 @@
     "axios-extensions": "^3.0.3",
     "debug": "^4.1.1",
     "filenamify": "^4.1.0",
+    "filesize": "^6.1.0",
     "lodash": "^4.17.10",
     "mime": "^2.3.1",
     "mkdirp-promise": "^5.0.1",
     "mustache": "^2.3.0",
     "prettyjson": "^1.2.1",
+    "progress": "^2.0.3",
     "yargs": "^12.0.1"
   },
   "devDependencies": {
@@ -48,6 +50,7 @@
     "@types/mustache": "^0.8.31",
     "@types/node": "^12.12.54",
     "@types/prettyjson": "^0.0.28",
+    "@types/progress": "^2.0.3",
     "@types/yargs": "^11.1.0",
     "@typescript-eslint/eslint-plugin": "^3.8.0",
     "@typescript-eslint/parser": "^3.8.0",

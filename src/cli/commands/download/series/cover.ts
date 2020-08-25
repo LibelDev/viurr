@@ -1,7 +1,7 @@
 import * as inspect from '../../../../inspect';
 import * as cover from '../episode/cover';
 
-export const command = 'cover <productId> <filepath>';
+export const command = 'cover <productId> [filepath]';
 
 export const describe = 'Download cover images of a series';
 

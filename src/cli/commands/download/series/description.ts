@@ -1,7 +1,7 @@
 import * as inspect from '../../../../inspect';
 import * as description from '../episode/description';
 
-export const command = 'description <productId> <filepath>';
+export const command = 'description <productId> [filepath]';
 
 export const describe = 'Download descriptions of a series';
 

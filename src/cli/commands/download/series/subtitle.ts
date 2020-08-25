@@ -3,7 +3,7 @@ import * as subtitle from '../episode/subtitle';
 
 const { builder } = subtitle;
 
-export const command = 'subtitle <productId> <filepath>';
+export const command = 'subtitle <productId> [filepath]';
 
 export const describe = 'Download subtitles of a series';
 

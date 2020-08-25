@@ -23,9 +23,9 @@ const { writeFile } = fs.promises;
  * @param {string} productId
  * @param {string} [filename] default: episode title
  * @param {QualityOption} [quality] default: `"1080p"`
- * @returns {Promise<string>} The output filepath
+ * @returns {Promise<[ISeries, IEpisode, string, ReturnType<typeof encode>]>}
  */
-export const video = async (productId: string, filename?: string, quality: QualityOption = '1080p'): Promise<string> => {
+export const video = async (productId: string, filename?: string, quality: QualityOption = '1080p'): Promise<[ISeries, IEpisode, string, ReturnType<typeof encode>]> => {
   const series = await inspect.series(productId);
   const episode = await inspect.episode(productId);
   const _quality = Quality[quality];
@@ -40,7 +40,7 @@ export const video = async (productId: string, filename?: string, quality: Quali
     QUALITY: quality
   };
   const fileExtension = 'mkv';
-  const _filename = filenamify(filename || `${episode.number} - ${episode.title}.${fileExtension}`);
+  const _filename = filenamify(filename || `${episode.number}-${episode.title}.${fileExtension}`);
   const filepath = mustache.render(_filename, filenameTemplateValues);
   if (await exists(filepath)) {
     throw new Error(`${filepath} already exists`);
@@ -70,10 +70,9 @@ export const video = async (productId: string, filename?: string, quality: Quali
   }
   args.push('-f', 'matroska');
   args.push('-c', 'copy');
-  args.push(_filepath);
-  const status = await encode(args);
-  debug('final status', status);
-  return _filepath;
+
+  const encoder = encode(args, _filepath);
+  return [series, episode, _filepath, encoder];
 };
 
 /**
@@ -82,9 +81,9 @@ export const video = async (productId: string, filename?: string, quality: Quali
  * @async
  * @param {string} productId
  * @param {string} [filename] default: episode title
- * @returns {Promise<string>} The output filepath
+ * @returns {Promise<[ISeries, IEpisode, string]>}
  */
-export const cover = async (productId: string, filename?: string): Promise<string> => {
+export const cover = async (productId: string, filename?: string): Promise<[ISeries, IEpisode, string]> => {
   const series = await inspect.series(productId);
   const episode = await inspect.episode(productId);
   const { coverImageURL } = episode;
@@ -95,7 +94,7 @@ export const cover = async (productId: string, filename?: string): Promise<strin
     EXT: extension
   };
   const fileExtension = extension;
-  const _filename = filenamify(filename || `${episode.number} - ${episode.title}.${fileExtension}`);
+  const _filename = filenamify(filename || `${episode.number}-${episode.title}.${fileExtension}`);
   const filepath = mustache.render(_filename, filenameTemplateValues);
   if (await exists(filepath)) {
     throw new Error(`${filepath} already exists`);
@@ -105,7 +104,7 @@ export const cover = async (productId: string, filename?: string): Promise<strin
   const directory = path.dirname(_filepath);
   await mkdirp(directory);
   await writeFile(_filepath, buffer);
-  return _filepath;
+  return [series, episode, _filepath];
 };
 
 /**
@@ -115,9 +114,9 @@ export const cover = async (productId: string, filename?: string): Promise<strin
  * @param {string} productId
  * @param {string} [filename] default: episode title
  * @param {string} [languageId] default: LanguageFlag.TraditionalChinese
- * @returns {Promise<string>} The output filepath
+ * @returns {Promise<[ISeries, IEpisode, string]>} The output filepath
  */
-export const subtitle = async (productId: string, filename?: string, languageId = LanguageFlag.TraditionalChinese): Promise<string> => {
+export const subtitle = async (productId: string, filename?: string, languageId = LanguageFlag.TraditionalChinese): Promise<[ISeries, IEpisode, string]> => {
   const series = await inspect.series(productId);
   const episode = await inspect.episode(productId);
   const { subtitles } = episode;
@@ -134,7 +133,7 @@ export const subtitle = async (productId: string, filename?: string, languageId 
     LANGUAGE_CODE: SubtitleLanguageCode[subtitle.name]
   };
   const fileExtension = 'srt';
-  const _filename = filenamify(filename || `${episode.number} - ${episode.title}.${fileExtension}`);
+  const _filename = filenamify(filename || `${episode.number}-${episode.title}.${SubtitleLanguageCode[subtitle.name]}.${fileExtension}`);
   const filepath = mustache.render(_filename, filenameTemplateValues);
   if (await exists(filepath)) {
     throw new Error(`${filepath} already exists`);
@@ -145,7 +144,7 @@ export const subtitle = async (productId: string, filename?: string, languageId 
   debug('subtitle directory:', directory);
   await mkdirp(directory);
   await writeFile(_filepath, data);
-  return _filepath;
+  return [series, episode, _filepath];
 };
 
 /**
@@ -154,14 +153,14 @@ export const subtitle = async (productId: string, filename?: string, languageId 
  * @async
  * @param {string} productId
  * @param {string} filename
- * @returns {Promise<string>} The output filepath
+ * @returns {Promise<[ISeries, IEpisode, string]>} The output filepath
  */
-export const description = async (productId: string, filename: string): Promise<string> => {
+export const description = async (productId: string, filename: string): Promise<[ISeries, IEpisode, string]> => {
   const series = await inspect.series(productId);
   const episode = await inspect.episode(productId);
   const filenameTemplateValues = getFilenameTemplateValues(series, episode);
   const fileExtension = 'txt';
-  const _filename = filenamify(filename || `${episode.number} - ${episode.title}.${fileExtension}`);
+  const _filename = filenamify(filename || `${episode.number}-${episode.title}.${fileExtension}`);
   const filepath = mustache.render(_filename, filenameTemplateValues);
   if (await exists(filepath)) {
     throw new Error(`${filepath} already exists`);
@@ -172,7 +171,7 @@ export const description = async (productId: string, filename: string): Promise<
   debug('description directory:', directory);
   await mkdirp(directory);
   await writeFile(_filepath, episode.description);
-  return _filepath;
+  return [series, episode, _filepath];
 };
 
 /**
