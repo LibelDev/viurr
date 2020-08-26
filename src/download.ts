@@ -113,10 +113,10 @@ export const cover = async (productId: string, filename?: string): Promise<[ISer
  * @async
  * @param {string} productId
  * @param {string} [filename] default: episode title
- * @param {string} [languageId] default: LanguageFlag.TraditionalChinese
+ * @param {LanguageFlag} [languageId] default: LanguageFlag.TraditionalChinese
  * @returns {Promise<[ISeries, IEpisode, string]>} The output filepath
  */
-export const subtitle = async (productId: string, filename?: string, languageId = LanguageFlag.TraditionalChinese): Promise<[ISeries, IEpisode, string]> => {
+export const subtitle = async (productId: string, filename?: string, languageId: LanguageFlag = LanguageFlag.TraditionalChinese): Promise<[ISeries, IEpisode, string]> => {
   const series = await inspect.series(productId);
   const episode = await inspect.episode(productId);
   const { subtitles } = episode;
