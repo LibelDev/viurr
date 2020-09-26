@@ -14,9 +14,13 @@ yargs
     if (message) {
       console.error(message);
     }
-    if (err && err.message) {
+    if (err) {
       debug(err);
-      console.error(err.message);
+      console.error(`
+        Please visit the GitHub repository [https://github.com/kitce/viurr] for more details,
+        or submit an issue to report a bug with the steps to reproduce and the following error:.
+      `);
+      console.error(err);
     }
     process.exit(1);
   })
