@@ -36,6 +36,10 @@ class Encoder extends EventEmitter { }
  * @returns {Encoder}
  */
 export const encode = (args: string[], filepath: string): Encoder => {
+  if (!ffmpeg) {
+    throw new Error('ENV `FFMPEG_PATH` is not defined');
+  }
+
   const _args = args.slice();
   _args.push('-progress', '-', '-nostats');
   _args.push(filepath);
