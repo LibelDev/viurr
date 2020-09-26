@@ -207,3 +207,5 @@ $RECYCLE.BIN/
 
 # Distributables
 dist/
+
+bin/
