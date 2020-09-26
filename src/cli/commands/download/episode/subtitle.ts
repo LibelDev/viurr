@@ -1,6 +1,6 @@
 import { Argv } from 'yargs';
-import * as download from '../../../../download';
 import { ICommandArguments } from '../builder';
+import * as download from '../../../../download';
 import { LanguageFlag } from '../../../../types/viu.types';
 
 export interface IOptions extends ICommandArguments {

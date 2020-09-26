@@ -1,5 +1,5 @@
-import * as inspect from '../../../../inspect';
 import * as video from '../episode/video';
+import * as inspect from '../../../../inspect';
 
 const { builder } = video;
 

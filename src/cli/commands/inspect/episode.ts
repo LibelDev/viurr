@@ -1,6 +1,6 @@
 import prettyjson from 'prettyjson';
-import * as inspect from '../../../inspect';
 import builder, { ICommandArguments } from './builder';
+import * as inspect from '../../../inspect';
 
 export const command = 'episode <productId>';
 

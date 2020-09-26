@@ -1,5 +1,5 @@
-import * as inspect from '../../../../inspect';
 import * as subtitle from '../episode/subtitle';
+import * as inspect from '../../../../inspect';
 
 const { builder } = subtitle;
 

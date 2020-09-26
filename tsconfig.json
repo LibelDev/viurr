@@ -10,7 +10,7 @@
     "esModuleInterop": true,
     "rootDir": "src",
     "outDir": "dist",
-    "declaration": true,
+    "declaration": true
   },
   "exclude": [
     "src/test"

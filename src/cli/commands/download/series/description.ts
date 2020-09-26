@@ -1,5 +1,5 @@
-import * as inspect from '../../../../inspect';
 import * as description from '../episode/description';
+import * as inspect from '../../../../inspect';
 
 export const command = 'description <productId> [filepath]';
 

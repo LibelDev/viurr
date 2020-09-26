@@ -1,5 +1,5 @@
-import * as inspect from '../../../../inspect';
 import * as cover from '../episode/cover';
+import * as inspect from '../../../../inspect';
 
 export const command = 'cover <productId> [filepath]';
 

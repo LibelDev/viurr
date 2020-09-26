@@ -1,5 +1,5 @@
-import * as download from '../../../../download';
 import { ICommandArguments } from '../builder';
+import * as download from '../../../../download';
 
 export type Options = ICommandArguments;
 
