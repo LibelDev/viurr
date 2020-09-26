@@ -207,6 +207,3 @@ $RECYCLE.BIN/
 
 # Distributables
 dist/
-
-# Pre-built executables
-bin/viurr-*
