@@ -2,7 +2,7 @@ import debugFactory from 'debug';
 import compact from 'lodash/compact';
 import { fetchDistributeWeb } from './apis/video/video.api';
 import { fetchAjaxDetail } from './apis/vod/vod.api';
-import { IEpisode, ISeries } from './types/viu.types';
+import { IEpisode, ISeries, LanguageFlag } from './types/viu.types';
 
 const debug = debugFactory('viurr:inspect');
 
@@ -44,7 +44,10 @@ export const episode = async (productId: string): Promise<IEpisode> => {
   const { current_product } = vodAjaxDetailResponse.data;
   if (!current_product) throw new Error(`Product "${productId}" not found`);
   const { ccs_product_id, number: _number, synopsis, description, subtitle, cover_image_url } = current_product;
-  const distributeWebResponse = await fetchDistributeWeb({ ccs_product_id }, productId);
+  const distributeWebResponse = await fetchDistributeWeb({
+    ccs_product_id,
+    language_flag_id: LanguageFlag.TraditionalChinese
+  }, productId);
   const { data, status } = distributeWebResponse;
   if (!data || !status || status.code !== 0) {
     debug('status', status);
