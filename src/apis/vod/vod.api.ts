@@ -1,5 +1,5 @@
 import debugFactory from 'debug';
-import { IQuery, IResponse } from './vod.api.types';
+import { AjaxDetail } from './vod.api.types';
 import * as ott from '../ott/ott.api';
 import { LanguageFlag } from '../../types/viu.types';
 
@@ -11,10 +11,10 @@ const debug = debugFactory('viurr:api:vod');
  *
  * @async
  * @public
- * @param {IQuery} query
- * @returns {Promise<IResponse>}
+ * @param {AjaxDetail.IQuery} query
+ * @returns {Promise<AjaxDetail.IResponse>}
  */
-export const fetchAjaxDetail = async (query: IQuery): Promise<IResponse> => {
+export const fetchAjaxDetail = async (query: AjaxDetail.IQuery): Promise<AjaxDetail.IResponse> => {
   const _query = {
     r: 'vod/ajax-detail',
     language_flag_id: LanguageFlag.TraditionalChinese,

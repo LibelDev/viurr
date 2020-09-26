@@ -2,7 +2,7 @@ import axios, { AxiosAdapter } from 'axios';
 import { cacheAdapterEnhancer, throttleAdapterEnhancer } from 'axios-extensions';
 import debugFactory from 'debug';
 import { baseURL } from './video.constants';
-import { IQuery, IResponse } from './video.api.types';
+import { DistributeWeb } from './video.api.types';
 
 const debug = debugFactory('viurr:api:video');
 
@@ -20,15 +20,15 @@ const video = axios.create({
  *
  * @async
  * @public
- * @param {IQuery} query
- * @returns {Promise<IResponse>}
+ * @param {DistributeWeb.IQuery} query
+ * @returns {Promise<DistributeWeb.IResponse>}
  */
-export const fetchDistributeWeb = async (query: IQuery, productId: string): Promise<IResponse> => {
+export const fetchDistributeWeb = async (query: DistributeWeb.IQuery, productId: string): Promise<DistributeWeb.IResponse> => {
   const url = 'distribute_web_hk.php';
   const headers = getHeaders(productId);
   const config = { params: query, headers };
   debug('fetching', url, query);
-  const { data } = await video.get<IResponse>(url, config);
+  const { data } = await video.get<DistributeWeb.IResponse>(url, config);
   return data;
 };
 

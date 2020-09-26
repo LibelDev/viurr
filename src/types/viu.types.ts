@@ -1,4 +1,4 @@
-import { IURL } from '../apis/video/video.api.types';
+import { DistributeWeb } from '../apis/video/video.api.types';
 
 export interface ISubtitle {
   name: keyof typeof SubtitleLanguageCode;
@@ -15,7 +15,7 @@ interface IEpisodeBase {
 }
 
 export interface IEpisode extends IEpisodeBase {
-  urls: IURL;
+  urls: DistributeWeb.IURL;
   subtitles: ISubtitle[];
 }
 
