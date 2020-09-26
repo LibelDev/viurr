@@ -136,9 +136,9 @@ Downloaded: /Users/kit.lee/Workspace/Personal/viurr/1-天才籃球員誕生.chi.
 
 Video
 
-This program uses FFmpeg to encode the HLS playlist file and output the video with the original codecs. (i.e. `-c copy`), the executable FFmpeg and FFprobe are already included.
+This program uses FFmpeg to encode the HLS playlist file and output the video with the original codecs. (i.e. `-c copy`).
 
-You may also set the absolute paths to the environment variables `FFMPEG_PATH` and `FFPROBE_PATH` to use the specified executables.
+If you already have FFmpeg available in your `PATH`, then you are good to go, otherwise, you need to set the environment variable `FFMPEG_PATH` as the path to the executable FFmpeg.
 
 ```bash
 $ viurr download episode video 6979
