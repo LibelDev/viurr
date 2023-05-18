@@ -1,6 +1,6 @@
 {
   "name": "viurr",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "Download programmes from Viu",
   "main": "./dist/index.js",
   "author": "kitce",
@@ -13,11 +13,9 @@
   "scripts": {
     "clean:build": "rm -rf dist",
     "prebuild": "yarn clean:build",
-    "postbuild": "cp -r src/templates dist/",
     "cli": "ts-node src/cli/cli.ts",
     "build": "tsc",
     "lint": "eslint src/**",
-    "prerelease": "yarn build",
     "prepublishOnly": "yarn build"
   },
   "files": [
