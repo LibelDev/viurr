@@ -183,7 +183,7 @@ Download the subtitle in specific language in SRT format
 
 ## TODO
 
-- [ ] Combine second subtitle
+- [x] Combine second subtitle
 - [ ] Interactive CLI
 
 ## Contribute
