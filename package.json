@@ -26,7 +26,7 @@
     "url": "https://github.com/kitce/viurr"
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.21.2",
     "axios-extensions": "^3.0.3",
     "debug": "^4.1.1",
     "filenamify": "^4.1.0",
