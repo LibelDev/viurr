@@ -1,24 +1,24 @@
 import axios from 'axios';
 import debugFactory from 'debug';
 import filenamify from 'filenamify';
-import fs from 'fs';
-import flatMap from 'lodash/flatMap';
+import fs from 'fs/promises';
 import mkdirp from 'mkdirp';
 import path from 'path';
+import config from './config/config';
 import * as inspect from './inspect';
-import { encode } from './lib/ffmpeg';
+import { flipEnum } from './lib/enum';
+import { encode, type IEncoder, type ISavedSubtitle } from './lib/ffmpeg';
 import { exists, getBaseFilename } from './lib/file';
 import { fetchImageWithMetadata } from './lib/image';
-import { IEpisode, ISeries, LanguageFlagId, Quality, QualityOption, SubtitleLanguageCode } from './types/viu.types';
+import { mergeSRTs, patchSrtPosition } from './lib/subtitle';
+import { LanguageFlagId, Quality, SecondSubtitlePosition, SrtSubtitlePosition, SubtitleLanguageCode, SubtitleLanguageName, type IEpisode, type ISeries, type QualityOption } from './types/types';
 
 const debug = debugFactory('viurr:download');
-
-const { writeFile } = fs.promises;
 
 /**
  * Download the video in specific quality
  */
-export const video = async (productId: string, quality: QualityOption = '1080p'): Promise<[ISeries, IEpisode, string, ReturnType<typeof encode>]> => {
+export const video = async (productId: string, quality: QualityOption = '1080p'): Promise<[ISeries, IEpisode, string, IEncoder]> => {
   const series = await inspect.series(productId);
   const episode = await inspect.episode(productId);
   const _quality = Quality[quality];
@@ -35,30 +35,21 @@ export const video = async (productId: string, quality: QualityOption = '1080p')
     throw new Error(`${filepath} already exists`);
   }
   debug('video file:', filepath);
-  const directory = path.dirname(filepath);
-  await mkdirp(directory);
-  const [, mimeType, extension] = await fetchImageWithMetadata(episode.coverImageURL);
-  const args = [
-    '-i', url,
-    ...flatMap(episode.subtitles, (subtitle) => ['-i', subtitle.url]),
-    '-attach', episode.coverImageURL,
-    '-metadata', `title=${episode.title}`,
-    '-metadata', `description=${episode.description}`,
-    '-metadata:s:t:0', `mimetype=${mimeType}`,
-    '-metadata:s:t:0', `filename=cover.${extension}`
-  ];
-  for (let i = 0; i < episode.subtitles.length; i++) {
-    const subtitle = episode.subtitles[i];
-    const start = args.length - 2;
-    args.splice(
-      start, 0,
-      `-metadata:s:s:${i}`, `title=${subtitle.name}`,
-      `-metadata:s:s:${i}`, `language=${SubtitleLanguageCode[subtitle.name] || SubtitleLanguageCode.Undefined}`
-    );
-  }
-  args.push('-f', 'matroska');
-  args.push('-c', 'copy');
-  const encoder = encode(args, filepath);
+  /* download the temporary subtitle files before encoding */
+  const subtitles = await Promise.all(
+    episode.subtitles.map(async (_subtitle) => {
+      const languageName = flipEnum(SubtitleLanguageName)[_subtitle.name];
+      const languageId = LanguageFlagId[languageName];
+      const [, , filepath] = await subtitle(productId, languageId, true);
+      return { ..._subtitle, filepath } as ISavedSubtitle;
+    })
+  );
+  /* start encoding */
+  const encoder = await encode(episode, quality, subtitles, filepath);
+  /* clean up the temporary subtitle files */
+  encoder.on('end', () => {
+    subtitles.forEach((subtitle) => fs.unlink(subtitle.filepath));
+  });
   return [series, episode, filepath, encoder];
 };
 
@@ -80,14 +71,14 @@ export const cover = async (productId: string): Promise<[ISeries, IEpisode, stri
   debug('cover image file:', filepath);
   const directory = path.dirname(filepath);
   await mkdirp(directory);
-  await writeFile(filepath, buffer);
+  await fs.writeFile(filepath, buffer);
   return [series, episode, filepath];
 };
 
 /**
  * Download the subtitle in specific language in SRT format
  */
-export const subtitle = async (productId: string, languageId: LanguageFlagId): Promise<[ISeries, IEpisode, string]> => {
+export const subtitle = async (productId: string, languageId: LanguageFlagId, temporary = false): Promise<[ISeries, IEpisode, string]> => {
   const series = await inspect.series(productId);
   const episode = await inspect.episode(productId);
   const { subtitles } = episode;
@@ -97,10 +88,18 @@ export const subtitle = async (productId: string, languageId: LanguageFlagId): P
     /* tslint:disable-next-line:max-line-length */
     throw new Error(`Language ID "${languageId}" is not available in ${baseFilename}`);
   }
-  debug('subtitle url:', subtitle.url);
-  const { data } = await axios.get(subtitle.url);
+  const { url, secondSubtitleURL, secondSubtitlePosition } = subtitle;
+  debug('subtitle url:', url);
+  let { data } = await axios.get<string>(url);
+  if (secondSubtitleURL) {
+    debug('second subtitle url:', secondSubtitleURL);
+    const { data: secondarySRT } = await axios.get<string>(secondSubtitleURL);
+    const position = flipEnum(SecondSubtitlePosition)[secondSubtitlePosition];
+    const patchedSecondarySRT = await patchSrtPosition(secondarySRT, SrtSubtitlePosition[position]);
+    data = await mergeSRTs(data, patchedSecondarySRT);
+  }
   const filename = filenamify(`${baseFilename}.${SubtitleLanguageCode[subtitle.name]}.srt`);
-  const filepath = path.resolve(process.cwd(), filename);
+  const filepath = temporary ? path.join(config.temporaryDirectory, filename) : path.resolve(process.cwd(), filename);
   if (await exists(filepath)) {
     throw new Error(`${filepath} already exists`);
   }
@@ -108,6 +107,6 @@ export const subtitle = async (productId: string, languageId: LanguageFlagId): P
   const directory = path.dirname(filepath);
   debug('subtitle directory:', directory);
   await mkdirp(directory);
-  await writeFile(filepath, data);
+  await fs.writeFile(filepath, data);
   return [series, episode, filepath];
 };

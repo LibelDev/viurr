@@ -4,6 +4,8 @@ export interface ISubtitle {
   name: SubtitleLanguageName;
   url: string;
   languageId: string;
+  secondSubtitleURL: string;
+  secondSubtitlePosition: SecondSubtitlePosition;
 }
 
 interface IEpisodeBase {
@@ -44,6 +46,7 @@ export enum LanguageFlagId {
   Thai = '8'
 }
 
+/** the values for MKV track */
 export enum SubtitleLanguageCode {
   '繁體中文' = 'chi', // 1
   'English' = 'eng', // 3
@@ -52,12 +55,22 @@ export enum SubtitleLanguageCode {
   'Undefined' = 'und' // default
 }
 
+/** the values from API response */
 export enum SubtitleLanguageName {
   TraditionalChinese = '繁體中文',
   English = 'English',
   Indonesian = 'Indo',
   Thai = 'ภาษาไทย',
-  Undefined = 'Undefined'
+}
+
+/** the values from API response */
+export enum SecondSubtitlePosition {
+  Top = 0
+}
+
+/** the values for SRT subtitle */
+export enum SrtSubtitlePosition {
+  Top = 8
 }
 
 export enum Platform {

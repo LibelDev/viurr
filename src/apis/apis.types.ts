@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-namespace */
-import type { LanguageFlagId, PlatformFlagLabel, Quality, SubtitleLanguageName, Platform } from './../types/viu.types';
+import type { LanguageFlagId, Platform, PlatformFlagLabel, Quality, SecondSubtitlePosition, SubtitleLanguageName } from '../types/types';
 
 type TResponse<D> = {
   data: D;
@@ -47,7 +47,7 @@ interface ICurrentProduct {
     product_subtitle_id: string;
     product_subtitle_language_id: string;
     second_subtitle_url: string;
-    second_subtitle_position: number;
+    second_subtitle_position: SecondSubtitlePosition;
     code: string;
   }[];
   focus: null;

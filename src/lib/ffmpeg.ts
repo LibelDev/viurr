@@ -3,21 +3,26 @@ import debugFactory from 'debug';
 import EventEmitter from 'events';
 import filesize from 'filesize';
 import config from '../config/config';
+import { Quality, SubtitleLanguageCode, type IEpisode, type ISubtitle, type QualityOption } from '../types/types';
+import { fetchImageWithMetadata } from './image';
 
 const debug = debugFactory('viurr:lib:ffmpeg');
 
 const { ffmpeg } = config.executables;
 
+export interface ISavedSubtitle extends ISubtitle {
+  filepath: string;
+}
+
 interface IRawProgressStatusRegexMap {
   [key: string]: RegExp;
 }
 
-export interface IProgressStatus {
+interface IProgressStatus {
   [key: string]: string;
 }
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
-export interface IEncoder {
+export interface IEncoder extends EventEmitter {
   emit (event: 'status', status: IProgressStatus): boolean;
   emit (event: 'error', error: string): boolean;
   emit (event: 'end', code: number, signal: NodeJS.Signals): boolean;
@@ -30,51 +35,65 @@ class Encoder extends EventEmitter implements IEncoder { }
 
 /**
  * Encode with FFmpeg
- * 
- * @param {string[]} args arguments being passed to FFmpeg
- * @param {string} filepath output file
- * @returns {Encoder}
  */
-export const encode = (args: string[], filepath: string): Encoder => {
+export const encode = async (episode: IEpisode, quality: QualityOption, subtitles: ISavedSubtitle[], filepath: string) => {
   if (!ffmpeg) {
     throw new Error('ENV `FFMPEG_PATH` is not defined');
   }
-
-  const _args = args.slice();
-  _args.push('-progress', '-', '-nostats');
-  _args.push(filepath);
-
-  debug('args:', _args);
-
+  const args = await createArguments(episode, quality, subtitles, filepath);
+  debug('args:', args);
   const encoder = new Encoder();
-
-  // eslint-disable-next-line no-async-promise-executor
-  const process = spawn(ffmpeg, _args);
-
+  const process = spawn(ffmpeg, args);
   process.stdout.on('data', (chunk) => {
     const output = chunk.toString();
     debug('stdout', output);
     const status = normalizeProgressStatus(output);
     encoder.emit('status', status);
   });
-
   process.stderr.on('data', (chunk) => {
     const output = chunk.toString();
     debug('stderr', output);
     encoder.emit('error', output);
   });
-
   process.on('close', (code, signal) => {
     debug('child process exited with code: %s, signal: %s', code, signal);
     encoder.emit('end', code, signal);
   });
-
   return encoder;
 };
 
 // Helper functions
-function normalizeProgressStatus (output: string): IProgressStatus {
-  const regexes = {
+const createArguments = async (episode: IEpisode, quality: QualityOption, subtitles: ISavedSubtitle[], filepath: string) => {
+  const _quality = Quality[quality];
+  const url = episode.urls[_quality];
+  const [, mimeType, extension] = await fetchImageWithMetadata(episode.coverImageURL);
+  const args = [
+    '-i', url,
+    ...subtitles.flatMap((subtitle) => ['-i', subtitle.filepath]),
+    '-attach', episode.coverImageURL,
+    '-metadata', `title=${episode.title}`,
+    '-metadata', `description=${episode.description}`,
+    '-metadata:s:t:0', `mimetype=${mimeType}`,
+    '-metadata:s:t:0', `filename=cover.${extension}`
+  ];
+  for (let i = 0; i < subtitles.length; i++) {
+    const subtitle = subtitles[i];
+    const start = args.length - 4;
+    args.splice(
+      start, 0,
+      `-metadata:s:s:${i}`, `title=${subtitle.name}`,
+      `-metadata:s:s:${i}`, `language=${SubtitleLanguageCode[subtitle.name] || SubtitleLanguageCode.Undefined}`
+    );
+  }
+  args.push('-f', 'matroska');
+  args.push('-c', 'copy');
+  args.push('-progress', '-', '-nostats');
+  args.push(filepath);
+  return args;
+};
+
+const normalizeProgressStatus = (output: string) => {
+  const regexes: IRawProgressStatusRegexMap = {
     frame: /frame=(.*)/,
     fps: /fps=(.*)/,
     bitRate: /bitrate=(.*)/,
@@ -82,8 +101,8 @@ function normalizeProgressStatus (output: string): IProgressStatus {
     outTime: /out_time=(.*)/,
     speed: /speed=(.*)/,
     progress: /progress=(.*)/
-  } as IRawProgressStatusRegexMap;
-  const status = {} as IProgressStatus;
+  };
+  const progressStatus: IProgressStatus = {};
   for (const key in regexes) {
     const regex = regexes[key];
     const matched = output.match(regex);
@@ -92,24 +111,24 @@ function normalizeProgressStatus (output: string): IProgressStatus {
       switch (key) {
         case 'bitRate': {
           const _value = value.replace(/kbits\/s/, ' Kb/s');
-          status[key] = _value;
+          progressStatus[key] = _value;
           break;
         }
         case 'size': {
           const size = parseInt(value);
-          status[key] = filesize(size);
+          progressStatus[key] = filesize(size);
           break;
         }
         case 'outTime': {
           const _value = value.split('.')[0];
-          status[key] = _value;
+          progressStatus[key] = _value;
           break;
         }
         default: {
-          status[key] = value;
+          progressStatus[key] = value;
         }
       }
     }
   }
-  return status;
-}
+  return progressStatus;
+};

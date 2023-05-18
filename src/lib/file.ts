@@ -1,5 +1,5 @@
 import fs from 'fs';
-import type { IEpisode } from '../types/viu.types';
+import type { IEpisode } from '../types/types';
 
 const { access } = fs.promises;
 

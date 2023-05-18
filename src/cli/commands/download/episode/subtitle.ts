@@ -2,7 +2,7 @@ import type { Argv } from 'yargs';
 import * as download from '../../../../download';
 import { getEpisodeInfoString } from '../../../../lib/cli';
 import { flipEnum } from '../../../../lib/enum';
-import { LanguageFlagId, SubtitleLanguageName } from '../../../../types/viu.types';
+import { LanguageFlagId, SubtitleLanguageName } from '../../../../types/types';
 import type { ICommandArguments } from '../builder';
 
 export interface IOptions extends ICommandArguments {
@@ -35,8 +35,9 @@ export const builder = (yargs: Argv): Argv => (
 export const handler = async (argv: IOptions): Promise<void> => {
   const { productId, languageId = LanguageFlagId.TraditionalChinese } = argv;
   const [, episode, _filepath] = await download.subtitle(productId, languageId);
-  const language = SubtitleLanguageName[flipEnum(LanguageFlagId)[languageId]];
+  const language = flipEnum(LanguageFlagId)[languageId];
+  const languageName = SubtitleLanguageName[language];
   const episodeInfoString = getEpisodeInfoString(episode);
-  console.info(`Downloading subtitle of ${episodeInfoString} (Language: ${language})`);
+  console.info(`Downloading subtitle of ${episodeInfoString} (Language: ${languageName})`);
   console.info(`Downloaded: ${_filepath}`);
 };

@@ -1,7 +1,7 @@
 import type { Argv } from 'yargs';
 import * as download from '../../../../download';
 import { getEpisodeInfoString, trackEncoderProgress } from '../../../../lib/cli';
-import { Quality, QualityOption } from '../../../../types/viu.types';
+import { Quality, QualityOption } from '../../../../types/types';
 import type { ICommandArguments } from '../builder';
 
 export interface IOptions extends ICommandArguments {

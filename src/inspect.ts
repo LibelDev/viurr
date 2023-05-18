@@ -1,14 +1,14 @@
 import debugFactory from 'debug';
 import { fetchAuthToken, fetchMobile, fetchPlaybackDistribute, fetchProductPageProps } from './apis/apis';
 import { getAuthorizationHeader } from './lib/http';
-import { IEpisode, ISeries } from './types/viu.types';
+import type { IEpisode, ISeries, ISubtitle } from './types/types';
 
 const debug = debugFactory('viurr:inspect');
 
 /**
  * Inspect the details of a series
  */
-export const series = async (productId: string): Promise<ISeries> => {
+export const series = async (productId: string) => {
   const { productAltLangList, productDetail } = await fetchProductPageProps(productId);
   const { data: { product } } = productAltLangList;
   const { data: { series } } = productDetail;
@@ -35,13 +35,13 @@ export const series = async (productId: string): Promise<ISeries> => {
       description: product.description,
       coverImageURL: product.cover_image_url
     }))
-  };
+  } as ISeries;
 };
 
 /**
  * Inspect the details of an episode
  */
-export const episode = async (productId: string): Promise<IEpisode> => {
+export const episode = async (productId: string) => {
   const { productAltLangList, productDetail } = await fetchProductPageProps(productId);
   const { data: { product } } = productAltLangList;
   const { data: { current_product, series } } = productDetail;
@@ -71,10 +71,12 @@ export const episode = async (productId: string): Promise<IEpisode> => {
     description: current_product.description,
     coverImageURL: current_product.cover_image_url,
     urls: data.stream.url,
-    subtitles: current_product.subtitle.map((subtitle) => ({
+    subtitles: current_product.subtitle.map<ISubtitle>((subtitle) => ({
       name: subtitle.name,
-      url: subtitle.url,
-      languageId: subtitle.product_subtitle_language_id
+      url: subtitle.subtitle_url,
+      languageId: subtitle.product_subtitle_language_id,
+      secondSubtitleURL: subtitle.second_subtitle_url,
+      secondSubtitlePosition: subtitle.second_subtitle_position
     }))
-  };
+  } as IEpisode;
 };

@@ -3,7 +3,6 @@
   "editor.detectIndentation": false,
   "editor.accessibilitySupport": "off",
   "files.autoSave": "onFocusChange",
-  "files.insertFinalNewline": true,
   "javascript.format.insertSpaceAfterConstructor": true,
   "javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": true,
   "javascript.format.insertSpaceBeforeAndAfterBinaryOperators": true,
@@ -16,6 +15,5 @@
   "typescript.format.insertSpaceBeforeFunctionParenthesis": true,
   "typescript.preferences.quoteStyle": "single",
   "typescript.updateImportsOnFileMove.enabled": "always",
-  "typescript.tsdk": "node_modules/typescript/lib",
   "eslint.packageManager": "yarn"
 }
