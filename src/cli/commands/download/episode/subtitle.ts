@@ -1,7 +1,7 @@
 import type { Argv } from 'yargs';
 import * as download from '../../../../download';
-import { getEpisodeInfoString } from '../../../../lib/cli';
-import { flipEnum } from '../../../../lib/enum';
+import { getEpisodeInfoString } from '../../../../helpers/cli';
+import { flipEnum } from '../../../../helpers/enum';
 import { LanguageFlagId, SubtitleLanguageName } from '../../../../types/types';
 import type { ICommandArguments } from '../builder';
 

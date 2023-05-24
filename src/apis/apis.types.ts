@@ -123,10 +123,14 @@ interface ISeries {
   seo_title: string;
   seo_description: string;
   release_of_year: string;
-  actor: null;
+  actor: {
+    id: string;
+    name: string;
+    type: string;
+  }[];
   series_tag: {
     id: number;
-    type: string;
+    type: 'tag' | 'director' | 'screenwriter' | 'original' | 'actor' | 'dubbing';
     tags: {
       id?: string;
       tag_id: string;

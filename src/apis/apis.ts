@@ -2,9 +2,9 @@ import axios from 'axios';
 import { cacheAdapterEnhancer, throttleAdapterEnhancer } from 'axios-extensions';
 import debugFactory from 'debug';
 import config from '../config/config';
-import { parseHTML } from '../lib/dom';
+import { parseHTML } from '../helpers/dom';
 import { LanguageFlagId, Platform, PlatformFlagLabel } from '../types/types';
-import { getValueBySimilarKey } from './../lib/object';
+import { getValueBySimilarKey } from '../helpers/object';
 import type { AuthTokenAPI, IProductPageProps, MobileAPI, PlaybackDistributeAPI } from './apis.types';
 
 const debug = debugFactory('viurr:apis');

@@ -4,9 +4,10 @@ import EventEmitter from 'events';
 import filesize from 'filesize';
 import config from '../config/config';
 import { Quality, SubtitleLanguageCode, type IEpisode, type ISubtitle, type QualityOption } from '../types/types';
+import { getSignature } from './common';
 import { fetchImageWithMetadata } from './image';
 
-const debug = debugFactory('viurr:lib:ffmpeg');
+const debug = debugFactory('viurr:helpers:ffmpeg');
 
 const { ffmpeg } = config.executables;
 
@@ -66,30 +67,26 @@ export const encode = async (episode: IEpisode, quality: QualityOption, subtitle
 const createArguments = async (episode: IEpisode, quality: QualityOption, subtitles: ISavedSubtitle[], filepath: string) => {
   const _quality = Quality[quality];
   const url = episode.urls[_quality];
-  const [, mimeType, extension] = await fetchImageWithMetadata(episode.coverImageURL);
-  const args = [
+  const [, coverImageMimeType, coverImageExtension] = await fetchImageWithMetadata(episode.coverImageURL);
+  const signature = await getSignature();
+  return [
     '-i', url,
     ...subtitles.flatMap((subtitle) => ['-i', subtitle.filepath]),
     '-attach', episode.coverImageURL,
     '-metadata', `title=${episode.title}`,
     '-metadata', `description=${episode.description}`,
-    '-metadata:s:t:0', `mimetype=${mimeType}`,
-    '-metadata:s:t:0', `filename=cover.${extension}`
+    '-metadata', `encoded_by=${signature}`,
+    ...subtitles.flatMap((subtitle, index) => [
+      '-metadata:s:s:' + index, `title=${subtitle.name}`,
+      '-metadata:s:s:' + index, `language=${SubtitleLanguageCode[subtitle.name] || SubtitleLanguageCode.Undefined}`
+    ]),
+    '-metadata:s:t:0', `mimetype=${coverImageMimeType}`,
+    '-metadata:s:t:0', `filename=cover.${coverImageExtension}`,
+    '-f', 'matroska',
+    '-c', 'copy',
+    '-progress', '-', '-nostats',
+    filepath
   ];
-  for (let i = 0; i < subtitles.length; i++) {
-    const subtitle = subtitles[i];
-    const start = args.length - 4;
-    args.splice(
-      start, 0,
-      `-metadata:s:s:${i}`, `title=${subtitle.name}`,
-      `-metadata:s:s:${i}`, `language=${SubtitleLanguageCode[subtitle.name] || SubtitleLanguageCode.Undefined}`
-    );
-  }
-  args.push('-f', 'matroska');
-  args.push('-c', 'copy');
-  args.push('-progress', '-', '-nostats');
-  args.push(filepath);
-  return args;
 };
 
 const normalizeProgressStatus = (output: string) => {

@@ -1,14 +1,12 @@
-import fs from 'fs';
+import fs from 'fs/promises';
 import type { IEpisode } from '../types/types';
-
-const { access } = fs.promises;
 
 /**
  * Check whether the given filepath exists
  */
 export const exists = async (filepath: string): Promise<boolean> => {
   try {
-    await access(filepath);
+    await fs.access(filepath);
     return true;
   } catch (error) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

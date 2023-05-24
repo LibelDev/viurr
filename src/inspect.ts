@@ -1,7 +1,7 @@
 import debugFactory from 'debug';
 import { fetchAuthToken, fetchMobile, fetchPlaybackDistribute, fetchProductPageProps } from './apis/apis';
-import { getAuthorizationHeader } from './lib/http';
-import type { IEpisode, ISeries, ISubtitle } from './types/types';
+import { getAuthorizationHeader } from './helpers/http';
+import type { IEpisode, IEpisodeBase, ISeries, ISubtitle } from './types/types';
 
 const debug = debugFactory('viurr:inspect');
 
@@ -27,13 +27,17 @@ export const series = async (productId: string) => {
     description: series.description,
     coverImageURL: series.cover_image_url,
     total: parseInt(series.product_total, 10),
-    episodes: product_list.map((product) => ({
+    episodes: product_list.map<IEpisodeBase>((product) => ({
       productId: product.product_id,
       number: parseInt(product.number, 10),
       seriesTitle: series.name,
       title: product.synopsis,
       description: product.description,
       coverImageURL: product.cover_image_url
+    })),
+    seriesTags: series.series_tag.map(({ type, tags }) => ({
+      type,
+      tags: tags.map(({ name }) => name)
     }))
   } as ISeries;
 };
@@ -77,6 +81,10 @@ export const episode = async (productId: string) => {
       languageId: subtitle.product_subtitle_language_id,
       secondSubtitleURL: subtitle.second_subtitle_url,
       secondSubtitlePosition: subtitle.second_subtitle_position
+    })),
+    seriesTags: series.series_tag.map(({ type, tags }) => ({
+      type,
+      tags: tags.map(({ name }) => name)
     }))
   } as IEpisode;
 };

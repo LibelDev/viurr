@@ -5,7 +5,7 @@ import Mustache from 'mustache';
 import path from 'path';
 import { SrtSubtitlePosition } from '../types/types';
 
-const debug = debugFactory('viurr:lib:subtitle');
+const debug = debugFactory('viurr:helpers:subtitle');
 
 interface ISubtitle {
   number: number;

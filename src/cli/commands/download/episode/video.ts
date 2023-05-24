@@ -1,6 +1,6 @@
 import type { Argv } from 'yargs';
 import * as download from '../../../../download';
-import { getEpisodeInfoString, trackEncoderProgress } from '../../../../lib/cli';
+import { getEpisodeInfoString, trackEncoderProgress } from '../../../../helpers/cli';
 import { Quality, QualityOption } from '../../../../types/types';
 import type { ICommandArguments } from '../builder';
 

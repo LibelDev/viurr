@@ -4,16 +4,13 @@ Download programmes from Viu
 
 ## Install
 
-If you have already installed `node>=12` and `npm`/`yarn`, you can install Viurr globally to make it available in `PATH`.
+If you have already installed `node>=16.20`, you can install Viurr globally to make it available in `PATH`.
 
 ```bash
 # npm
 npm install -g viurr
-```
-
-```bash
-# Yarn
-yarn global add viurr
+# pnpm
+pnpm install -g viurr
 ```
 
 ## Usage
@@ -75,11 +72,13 @@ Options:
 
 `productId`
 
-The id that can be found in the URL on viu.com, for example,
+The ID that can be found in the URL on viu.com, for example,
 
-URL: `https://www.viu.com/ott/hk/zh-hk/vod/6979/男兒當入樽`
-
-Product ID: `6979`
+```
+https://www.viu.com/ott/hk/zh-hk/vod/6979/男兒當入樽
+                                     ----
+```
+The `productId` of this episode is `6979`.
 
 ---
 
@@ -138,16 +137,13 @@ Install as local module
 ```bash
 # npm
 npm install viurr --save
-```
-
-```bash
-# Yarn
-yarn add viurr
+# pnpm
+pnpm install viurr
 ```
 
 #### Types
 
-Learn more [here](https://github.com/kitce/viurr/blob/master/src/types/viu.types.ts)
+Learn more [here](https://github.com/kitce/viurr/blob/master/src/types/types.ts)
 
 #### Inspect
 
@@ -171,7 +167,7 @@ import { download } from "viurr";
 
 Download the video in specific quality
 
-`download.video(productId: string, quality: QualityChoice = '1080p'): Promise<[ISeries, IEpisode, string, ReturnType<typeof encode>]>`
+`download.video(productId: string, quality: QualityOption = '1080p'): Promise<[ISeries, IEpisode, string, IEncoder]>`
 
 Download the cover image
 
@@ -179,18 +175,24 @@ Download the cover image
 
 Download the subtitle in specific language in SRT format
 
-`download.subtitle(productId: string, languageId: LanguageFlag): Promise<[ISeries, IEpisode, string]>`
+`download.subtitle(productId: string, languageId: LanguageFlag, temporary = false): Promise<[ISeries, IEpisode, string]>`
 
 ## TODO
 
 - [x] Combine second subtitle
 - [ ] Interactive CLI
 
-## Contribute
+## Build
 
 ```bash
-yarn install
-yarn build
+pnpm build
+```
+
+## Development
+
+```bash
+pnpm build:watch
+pnpm cli
 ```
 
 ## Test

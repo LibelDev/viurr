@@ -1,5 +1,5 @@
 import * as download from '../../../../download';
-import { getEpisodeInfoString } from '../../../../lib/cli';
+import { getEpisodeInfoString } from '../../../../helpers/cli';
 import type { ICommandArguments } from '../builder';
 
 export type Options = ICommandArguments;

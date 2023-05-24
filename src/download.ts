@@ -6,11 +6,11 @@ import mkdirp from 'mkdirp';
 import path from 'path';
 import config from './config/config';
 import * as inspect from './inspect';
-import { flipEnum } from './lib/enum';
-import { encode, type IEncoder, type ISavedSubtitle } from './lib/ffmpeg';
-import { exists, getBaseFilename } from './lib/file';
-import { fetchImageWithMetadata } from './lib/image';
-import { mergeSRTs, patchSrtPosition } from './lib/subtitle';
+import { flipEnum } from './helpers/enum';
+import { encode, type IEncoder, type ISavedSubtitle } from './helpers/ffmpeg';
+import { exists, getBaseFilename } from './helpers/file';
+import { fetchImageWithMetadata } from './helpers/image';
+import { mergeSRTs, patchSrtPosition } from './helpers/subtitle';
 import { LanguageFlagId, Quality, SecondSubtitlePosition, SrtSubtitlePosition, SubtitleLanguageCode, SubtitleLanguageName, type IEpisode, type ISeries, type QualityOption } from './types/types';
 
 const debug = debugFactory('viurr:download');

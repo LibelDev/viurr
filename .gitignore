@@ -205,7 +205,5 @@ $RECYCLE.BIN/
 
 # End of https://www.toptal.com/developers/gitignore/api/node,yarn,macos,windows,linux,code
 
-# Distributables
-dist/
-
-bin/
+.tmp
+dist

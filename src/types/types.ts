@@ -8,7 +8,7 @@ export interface ISubtitle {
   secondSubtitlePosition: SecondSubtitlePosition;
 }
 
-interface IEpisodeBase {
+export interface IEpisodeBase {
   productId: string;
   number: number;
   seriesTitle: string;
@@ -20,6 +20,10 @@ interface IEpisodeBase {
 export interface IEpisode extends IEpisodeBase {
   urls: PlaybackDistributeAPI.TURL;
   subtitles: ISubtitle[];
+  seriesTags: {
+    type: string;
+    tags: string[];
+  }[];
 }
 
 export interface ISeries {
@@ -28,6 +32,10 @@ export interface ISeries {
   coverImageURL: string;
   total: number;
   episodes: IEpisodeBase[];
+  seriesTags: {
+    type: string;
+    tags: string[];
+  }[];
 }
 
 export enum Quality {
