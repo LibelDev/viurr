@@ -2,9 +2,12 @@
 
 Download programmes from Viu
 
-## Install
+## Prerequisites
 
-If you have already installed `node>=16.20`, you can install Viurr globally to make it available in `PATH`.
+- [Node.js](https://nodejs.org/) 16+
+- [FFmpeg](https://ffmpeg.org/)
+
+## Install
 
 ```bash
 # npm
