@@ -184,6 +184,7 @@ Download the subtitle in specific language in SRT format
 
 - [x] Combine second subtitle
 - [ ] Interactive CLI
+- [ ] GUI
 
 ## Build
 
