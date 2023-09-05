@@ -7,7 +7,11 @@ Download programmes from Viu
 - [Node.js](https://nodejs.org/) 16+
 - [FFmpeg](https://ffmpeg.org/)
 
-## Install
+## Usage
+
+### Command Line Interface
+
+Install globally
 
 ```bash
 # npm
@@ -15,10 +19,6 @@ npm install -g viurr
 # pnpm
 pnpm install -g viurr
 ```
-
-## Usage
-
-### Command Line Interface
 
 #### Inspect
 
