@@ -146,7 +146,7 @@ pnpm install viurr
 
 #### Types
 
-Learn more [here](https://github.com/kitce/viurr/blob/master/src/types/types.ts)
+Learn more [here](https://github.com/LibelDev/viurr/blob/master/src/types/types.ts)
 
 #### Inspect
 
