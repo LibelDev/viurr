@@ -4,7 +4,7 @@
   "version": "1.4.0",
   "description": "Download programmes from Viu",
   "main": "./dist/main.js",
-  "author": "kitce",
+  "author": "LibelDev",
   "license": "MIT",
   "bin": "./dist/cli/cli.js",
   "engines": {
